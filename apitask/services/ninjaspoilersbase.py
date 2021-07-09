@@ -16,7 +16,6 @@ from apitask.constant import random_key_length
 def convert_key_case_to_camel_case(key):
     # split underscore using split
     temp = key.split('_')
-    # joining result
     res = temp[0] + ''.join(ele.title() for ele in temp[1:])
     return res
 
@@ -38,6 +37,7 @@ class NinjaSpoilers(ABC):
     @staticmethod
     def prepare_update_db_statement(updated_key_list):
         statement = "SET"
+        updated_key_list = [key.lstrip(":") for key in updated_key_list]
         for key in updated_key_list:
             statement = f"{statement} {convert_key_case_to_camel_case(key)} = :{key},"
         return statement.rstrip(',')

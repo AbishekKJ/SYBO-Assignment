@@ -4,7 +4,7 @@ Author: Abishek KJ
 Date: 09-Jul-2021
 """
 
-from ninjaspoilersbase import NinjaSpoilers
+from apitask.services import NinjaSpoilers
 from uuid import UUID
 
 
@@ -29,14 +29,17 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
             high_score = user_data.get("highScore")
             games_played.append({"gameId": game_id,
                                  "id": game_data.get("gamesPlayed")})
-            if game_data.get("score") > high_score:
+            if high_score:
+                if game_data.get("score") > high_score:
+                    high_score = game_data.get("score")
+            else:
                 high_score = game_data.get("score")
-                updated_user_data["highScore"] = high_score
+            updated_user_data[":highScore"] = high_score
             scores.append(game_data.get("score"))
 
         updated_user_data.update({
-            "scores": scores,
-            "gamesPlayed": games_played
+            ":scores": scores,
+            ":gamesPlayed": games_played
 
         })
         user_data_update_statement = self.prepare_update_db_statement(list(updated_user_data.keys()))
@@ -52,7 +55,7 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
             "usedId": UUID(self.user_id).hex,
             "score": game_data.get("score")
         }
-        games_table.put_item(game_details)
+        games_table.put_item(Item=game_details)
 
     def load_game_state(self):
         user_table = self.aws_resource.Table("Users")
