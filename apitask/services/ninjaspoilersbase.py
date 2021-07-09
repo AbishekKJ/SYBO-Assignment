@@ -10,7 +10,7 @@ from abc import ABC
 
 import boto3
 
-from api_task.constant import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, random_key_length
+from apitask.constant import random_key_length
 
 
 def convert_key_case_to_camel_case(key):
@@ -27,10 +27,7 @@ class NinjaSpoilers(ABC):
 
     @staticmethod
     def get_aws_resource(aws_resource):
-        return boto3.resource(aws_resource,
-                              aws_access_key_id=AWS_ACCESS_KEY_ID,
-                              aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-                              region_name="us-east-1")
+        return boto3.resource(aws_resource)
 
     @staticmethod
     def get_random_id(event_prefix):
