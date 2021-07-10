@@ -14,3 +14,5 @@ class Resources(Enum):
 
 
 random_key_length = 20
+
+dynamo_db_batch_count = 100
