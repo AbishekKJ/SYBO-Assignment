@@ -9,14 +9,7 @@ from uuid import uuid1
 
 import boto3
 
-from apitask.constant import random_key_length
-
-
-def convert_key_case_to_camel_case(key):
-    # split underscore using split
-    temp = key.split('_')
-    res = temp[0] + ''.join(ele.title() for ele in temp[1:])
-    return res
+from apitask.utility import convert_key_case_to_camel_case
 
 
 class NinjaSpoilers(ABC):
@@ -39,8 +32,3 @@ class NinjaSpoilers(ABC):
         for key in updated_key_list:
             statement = f"{statement} {convert_key_case_to_camel_case(key)} = :{key},"
         return statement.rstrip(',')
-
-
-
-
-
