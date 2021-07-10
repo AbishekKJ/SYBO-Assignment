@@ -37,15 +37,15 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
             if high_score:
                 if game_data.get("score") > high_score:
                     high_score = game_data.get("score")
-                    updated_user_data[":highScore"] = high_score
+                    updated_user_data[":high_score"] = high_score
             else:
                 high_score = game_data.get("score")
-                updated_user_data[":highScore"] = high_score
+                updated_user_data[":high_score"] = high_score
             scores.append(game_data.get("score"))
 
         updated_user_data.update({
             ":scores": scores,
-            ":gamesPlayed": games_played
+            ":games_played": games_played
 
         })
         user_data_update_statement = self.prepare_update_db_statement(list(updated_user_data.keys()))
