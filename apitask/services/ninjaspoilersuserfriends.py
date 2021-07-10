@@ -5,9 +5,8 @@ Date: 09-Jul-2021
 """
 
 from apitask.services import NinjaSpoilers
-from uuid import UUID
 
-from apitask.utility.exception import HTTPError
+from apitask.utility import HTTPError, replace_decimals
 from apitask.constant import dynamo_db_batch_count
 
 
@@ -20,14 +19,14 @@ class NinjaSpoilersUserFriends(NinjaSpoilers):
     def update_friends(self, friends_data):
         user_table = self.aws_resource.Table("Users")
         user_data = user_table.get_item(Key={
-            'id': UUID(self.user_id).hex,
+            'id': self.user_id,
         })
         user_data = user_data.get("Item")
         if not user_data:
             raise HTTPError(404, "DATA_NOT_FOUND")
         if user_data:
             friends_list = user_data.get("friendsList", [])
-            friends_list.extend([UUID(i).hex for i in friends_data.get("friends")])
+            friends_list.extend(friends_data.get("friends"))
             update_data = {
                 ":friends_list": friends_list
             }
@@ -48,7 +47,7 @@ class NinjaSpoilersUserFriends(NinjaSpoilers):
         dynamo_resource = self.aws_resource
         user_table = dynamo_resource.Table("Users")
         user_data = user_table.get_item(Key={
-            'id': UUID(self.user_id).hex,
+            'id': self.user_id,
         })
         user_data = user_data.get("Item")
         if not user_data:
@@ -60,8 +59,15 @@ class NinjaSpoilersUserFriends(NinjaSpoilers):
             for ids in batch_friends_list:
                 resp = dynamo_resource.batch_get_item(RequestItems={"Users": {
                     "Keys": [{'id': friend_id} for friend_id in ids],
-                    "ProjectionExpression": "id, #name, highScore",
+                    "ProjectionExpression": "id, #name, highScore, createdAt",
                     "ExpressionAttributeNames": {'#name': 'name'}
                 }
                 })
-                friends_data.append(resp.get("Responses"))
+                friends_data.extend(resp.get("Responses", {}).get("Users", []))
+            friends_data = replace_decimals(friends_data)
+            sorted_data = sorted(friends_data, key=lambda i: i['createdAt'])
+            start_range = (page_no - 1) * 2
+            end_range = page_no * 2
+            return {
+                "friends": sorted_data[start_range:end_range]
+            }
