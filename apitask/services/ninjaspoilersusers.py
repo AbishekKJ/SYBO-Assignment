@@ -5,7 +5,7 @@ Date: 09-Jul-2021
 """
 
 from apitask.services import NinjaSpoilers
-from uuid import uuid4
+from uuid import uuid1
 from datetime import datetime
 
 
@@ -16,7 +16,7 @@ class NinjaSpoilersUsers(NinjaSpoilers):
 
     def create_user(self, name):
         table = self.aws_resource.Table("Users")
-        user_id = uuid4()
+        user_id = uuid1()
         user_data = {
             "id": user_id.hex,
             "createdAt": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
