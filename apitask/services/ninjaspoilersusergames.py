@@ -5,7 +5,6 @@ Date: 09-Jul-2021
 """
 
 from apitask.services import NinjaSpoilers
-from uuid import UUID
 
 from apitask.utility.exception import HTTPError
 
@@ -22,7 +21,7 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
         high_score_table = self.aws_resource.Table("HighScore")
         game_id = self.get_random_id("game")
         user_data = user_table.get_item(Key={
-            'id': UUID(self.user_id).hex,
+            'id': self.user_id,
         })
         user_data = user_data.get("Item")
         if not user_data:
@@ -51,21 +50,21 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
         user_data_update_statement = self.prepare_update_db_statement(list(updated_user_data.keys()))
         user_table.update_item(
             Key={
-                "id": UUID(self.user_id).hex
+                "id": self.user_id
             },
             UpdateExpression=user_data_update_statement,
             ExpressionAttributeValues=updated_user_data
         )
         game_details = {
             "id": game_id,
-            "usedId": UUID(self.user_id).hex,
+            "usedId": self.user_id,
             "score": game_data.get("score")
         }
         games_table.put_item(Item=game_details)
 
         if ":highScore" in updated_user_data:
             high_score_details = {
-                "id": UUID(self.user_id).hex,
+                "id": self.user_id,
                 "score": game_data.get("score")
             }
             high_score_table.put_item(Item=high_score_details)
@@ -75,7 +74,7 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
     def load_game_state(self):
         user_table = self.aws_resource.Table("Users")
         user_data = user_table.get_item(Key={
-            'id': UUID(self.user_id).hex,
+            'id': self.user_id,
         })
         user_data = user_data.get("Item")
         if not user_data:
