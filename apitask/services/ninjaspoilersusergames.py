@@ -7,6 +7,8 @@ Date: 09-Jul-2021
 from apitask.services import NinjaSpoilers
 from uuid import UUID
 
+from apitask.utility.exception import HTTPError
+
 
 class NinjaSpoilersUserGames(NinjaSpoilers):
 
@@ -17,11 +19,14 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
     def save_game_state(self, game_data):
         user_table = self.aws_resource.Table("Users")
         games_table = self.aws_resource.Table("Games")
+        high_score_table = self.aws_resource.Table("HighScore")
         game_id = self.get_random_id("game")
         user_data = user_table.get_item(Key={
             'id': UUID(self.user_id).hex,
         })
         user_data = user_data.get("Item")
+        if not user_data:
+            raise HTTPError(404, "DATA_NOT_FOUND")
         if user_data:
             updated_user_data = {}
             scores = user_data.get("scores")
@@ -32,9 +37,10 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
             if high_score:
                 if game_data.get("score") > high_score:
                     high_score = game_data.get("score")
+                    updated_user_data[":highScore"] = high_score
             else:
                 high_score = game_data.get("score")
-            updated_user_data[":highScore"] = high_score
+                updated_user_data[":highScore"] = high_score
             scores.append(game_data.get("score"))
 
         updated_user_data.update({
@@ -56,6 +62,15 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
             "score": game_data.get("score")
         }
         games_table.put_item(Item=game_details)
+
+        if ":highScore" in updated_user_data:
+            high_score_details = {
+                "id": UUID(self.user_id).hex,
+                "score": game_data.get("score")
+            }
+            high_score_table.put_item(Item=high_score_details)
+
+        return {"message": "Data updated successfully"}
 
     def load_game_state(self):
         user_table = self.aws_resource.Table("Users")
