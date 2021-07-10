@@ -28,7 +28,9 @@ class TestNinjaSpoilerServices(unittest.TestCase):
             save_game_state_obj.save_game_state(game_data)
 
     def test_load_game_state(self):
-        pass
+        load_game_state_obj = NinjaSpoilersUserGames("aec3d5c9-06f3-4c18-b723-4e933de58a5b")
+        resp = load_game_state_obj.load_game_state()
+        assert isinstance(resp, dict)
 
 
 if __name__ == '__main__':
