@@ -16,9 +16,9 @@ class NinjaSpoilersUsers(NinjaSpoilers):
 
     def create_user(self, name):
         table = self.aws_resource.Table("Users")
-        user_id = uuid1()
+        user_id = str(uuid1())
         user_data = {
-            "id": user_id.hex,
+            "id": user_id,
             "createdAt": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "name": name,
             "scores": [],
