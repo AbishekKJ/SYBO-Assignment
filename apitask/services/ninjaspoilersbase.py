@@ -4,9 +4,8 @@ Author: Abishek KJ
 Date: 09-Jul-2021
 """
 
-import random
-import string
 from abc import ABC
+from uuid import uuid1
 
 import boto3
 
@@ -30,8 +29,7 @@ class NinjaSpoilers(ABC):
 
     @staticmethod
     def get_random_id(event_prefix):
-        key_len = random_key_length - (len(event_prefix)+1)
-        random_id = f"{event_prefix}_{''.join(random.choices(string.ascii_letters + string.digits, k=key_len))}"
+        random_id = f"{event_prefix}_{uuid1().hex}"
         return random_id
 
     @staticmethod
