@@ -24,7 +24,7 @@ class NinjaSpoilersUsers(NinjaSpoilers):
             "scores": [],
             "gamesPlayed": [],
             "friendsList": [],
-            "highScore": ""
+            "highScore": 0
         }
         table.put_item(Item=user_data)
         return {"id": user_id, "name": name}
