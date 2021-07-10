@@ -13,6 +13,4 @@ class Resources(Enum):
     UPDATE_GET_FRIENDS = "/user/{userid}/friends"
 
 
-random_key_length = 20
-
 dynamo_db_batch_count = 100
