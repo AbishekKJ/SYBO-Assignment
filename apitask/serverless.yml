@@ -41,19 +41,19 @@ functions:
           method: post
           cors: true
       - http:
-          path: /user/{userid}/state
+          path: /user/{userId}/state
           method: put
           cors: true
       - http:
-          path: /user/{userid}/state
+          path: /user/{userId}/state
           method: get
           cors: true
       - http:
-          path: /user/{userid}/friends
+          path: /user/{userId}/friends
           method: put
           cors: true
       - http:
-          path: /user/{userid}/friends
+          path: /user/{userId}/friends
           method: get
           cors: true
 
