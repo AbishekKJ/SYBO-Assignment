@@ -78,6 +78,8 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
             'id': UUID(self.user_id).hex,
         })
         user_data = user_data.get("Item")
+        if not user_data:
+            raise HTTPError(404, "USER_DATA_NOT_FOUND")
         if user_data:
             return {"gamesPlayed": len(user_data.get("gamesPlayed")),
                     "score": user_data.get("highScore")}
