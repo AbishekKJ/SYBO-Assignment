@@ -66,8 +66,8 @@ class NinjaSpoilersUserFriends(NinjaSpoilers):
                 friends_data.extend(resp.get("Responses", {}).get("Users", []))
             friends_data = replace_decimals(friends_data)
             sorted_data = sorted(friends_data, key=lambda i: i['createdAt'])
-            start_range = (page_no - 1) * 2
-            end_range = page_no * 2
+            start_range = (page_no - 1) * item_count
+            end_range = page_no * item_count
             return {
                 "friends": sorted_data[start_range:end_range]
             }
