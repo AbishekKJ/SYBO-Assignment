@@ -59,7 +59,9 @@ class NinjaSpoilersUserFriends(NinjaSpoilers):
                                                                                            dynamo_db_batch_count)]
             for ids in batch_friends_list:
                 resp = dynamo_resource.batch_get_item(RequestItems={"Users": {
-                    "Keys": [{'id': friend_id} for friend_id in ids]
+                    "Keys": [{'id': friend_id} for friend_id in ids],
+                    "ProjectionExpression": "id, #name, highScore",
+                    "ExpressionAttributeNames": {'#name': 'name'}
                 }
                 })
                 friends_data.append(resp.get("Responses"))
