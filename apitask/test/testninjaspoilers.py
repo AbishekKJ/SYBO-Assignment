@@ -13,11 +13,13 @@ class TestNinjaSpoilerServices(unittest.TestCase):
 
     def test_create_user(self):
         user_obj = NinjaSpoilersUsers()
-        resp = user_obj.create_user("Abishek S")
-        assert isinstance(resp, dict)
+        user_list = ["Abishek", "Suganya", "Sudhakar", "Sathish", "Bref", "Vishnu"]
+        for user in user_list:
+            resp = user_obj.create_user(user)
+            assert isinstance(resp, dict)
 
     def test_save_game_state(self):
-        save_game_state_obj = NinjaSpoilersUserGames("aec3d5c9-06f3-4c18-b723-4e933de58a5b")
+        save_game_state_obj = NinjaSpoilersUserGames("5dc50172-e18b-11eb-84da-3cf011dfc659")
         score = 395
         for i in range(1, 100):
             score = score + 1
