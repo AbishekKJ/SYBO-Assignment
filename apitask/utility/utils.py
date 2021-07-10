@@ -5,7 +5,7 @@ Date: 09-Jul-2021
 """
 
 import decimal
-
+from uuid import UUID
 
 def convert_key_case_to_camel_case(key):
     # split underscore using split
@@ -25,3 +25,7 @@ def replace_decimals(obj):
     elif isinstance(obj, decimal.Decimal):
         return int(obj) if obj % 1 == 0 else obj
     return obj
+
+
+def convert_hex_to_uuid(hex_value):
+    return str(UUID(hex_value))
