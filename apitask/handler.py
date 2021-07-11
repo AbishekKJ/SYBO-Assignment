@@ -4,7 +4,7 @@ Author: Abishek KJ
 Date: 09-Jul-2021
 """
 
-from apitask.services import NinjaSpoilersManager
+from services import NinjaSpoilersManager
 
 
 def get_ninja_spoilers_user_services(event, context):
