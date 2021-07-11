@@ -53,7 +53,6 @@ class NinjaSpoilersManager:
                 return response
             elif resource == Resources.LOAD_SAVE_GAME_STATE.value:
                 path_parameters = self.event.get("pathParameters")
-                print("Path parameters", type(path_parameters))
                 if path_parameters:
                     user_id = path_parameters.get("userId")
                     manager_obj = NinjaSpoilersUserGames(user_id)
@@ -62,6 +61,7 @@ class NinjaSpoilersManager:
                     elif http_method == "PUT":
                         game_data = self.event.get("body")
                         if game_data:
+                            print("game data", game_data)
                             game_data = json.loads(game_data)
                             data = manager_obj.save_game_state(game_data)
                         else:
@@ -101,7 +101,10 @@ class NinjaSpoilersManager:
                 response["body"] = json.dumps(data)
                 return response
         except Exception as e:
-            response["statusCode"] = e.status
-            data = {"error": e.error_msg}
-            response["body"] = json.dumps(data)
-            return response
+            if "__module__" in dir(e):
+                if e.__module__ == "CustomException":
+                    response["statusCode"] = e.status
+                    data = {"error": e.error_msg}
+                    response["body"] = json.dumps(data)
+                    return response
+            raise
