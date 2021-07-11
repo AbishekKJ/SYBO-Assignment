@@ -6,7 +6,9 @@ Date: 09-Jul-2021
 
 import unittest
 
-from ..services import *
+from services.ninjaspoilersusergames import NinjaSpoilersUserGames
+from services.ninjaspoilersusers import NinjaSpoilersUsers
+from services.ninjaspoilersuserfriends import NinjaSpoilersUserFriends
 
 
 class TestNinjaSpoilerServices(unittest.TestCase):
