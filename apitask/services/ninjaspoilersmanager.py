@@ -24,11 +24,15 @@ class NinjaSpoilersManager:
         response = {"headers": {
             'Access-Control-Allow-Origin': '*'
         }}
+        print("Event object", self.event)
         resource = self.event.get("resource", "")
         http_method = self.event.get("httpMethod")
         if http_method in ["PUT", "POST"]:
             header = self.event.get("headers")
-            content_type = header.get("content-type")
+            for key in list(header.keys()):
+                if key.lower() == "content-type":
+                    content_type = header.get(key, "")
+                    break
             if content_type != "application/json":
                 response["statusCode"] = 412
                 data = {
@@ -38,6 +42,7 @@ class NinjaSpoilersManager:
                 return response
         try:
             if resource == Resources.CREATE_USER.value:
+                print("Inside")
                 manager_obj = NinjaSpoilersUsers()
                 body = json.loads(self.event.get("body", {}))
                 name = body.get("name", "")
