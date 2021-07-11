@@ -34,8 +34,12 @@ class NinjaSpoilers(ABC):
         return statement.rstrip(',')
 
     @staticmethod
-    def validate_user_uuid_format(user_id):
+    def validate_user_uuid_format(user_id, user_friends=False):
         try:
             UUID(user_id)
         except ValueError:
-            raise HTTPUnProcessableEntity("Incorrect UUID in UserId")
+            if user_friends:
+                message = "Incorrect UUID in friendsId"
+            else:
+                message = "Incorrect UUID in UserId"
+        raise HTTPUnProcessableEntity(message)
