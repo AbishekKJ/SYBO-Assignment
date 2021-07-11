@@ -6,7 +6,7 @@ Date: 09-Jul-2021
 
 import unittest
 
-from apitask.services import *
+from ..services import *
 
 
 class TestNinjaSpoilerServices(unittest.TestCase):
