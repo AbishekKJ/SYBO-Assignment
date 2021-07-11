@@ -17,9 +17,17 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
         self.validate_user_uuid_format(self.user_id)
 
     def save_game_state(self, game_data):
+        """
+        Save user game state to db
+        """
         if ["gamesPlayed", "score"] != sorted(game_data):
             raise HTTPUnProcessableEntity(f"Invalid request. Request body should contain only the following keys - "
                                           f"{','.join(['gamesPlayed', 'score'])}")
+        if not isinstance(game_data.get("gamesPlayed"), int):
+            raise HTTPUnProcessableEntity(f"gamesPlayed should be integer")
+        if not isinstance(game_data.get("score"), int):
+            raise HTTPUnProcessableEntity(f"score should be integer")
+
         user_table = self.aws_resource.Table("Users")
         games_table = self.aws_resource.Table("Games")
         high_score_table = self.aws_resource.Table("HighScore")
@@ -76,6 +84,9 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
         return {"message": "Data updated successfully"}
 
     def load_game_state(self):
+        """
+        Load user game state from db
+        """
         user_table = self.aws_resource.Table("Users")
         user_data = user_table.get_item(Key={
             'id': self.user_id,
