@@ -5,11 +5,11 @@ Date: 09-Jul-2021
 """
 
 from abc import ABC
-from uuid import uuid1
+from uuid import uuid1, UUID
 
 import boto3
 
-from utility.utils import convert_key_case_to_camel_case
+from utility import convert_key_case_to_camel_case, HTTPPreConditionFailed
 
 
 class NinjaSpoilers(ABC):
@@ -32,3 +32,11 @@ class NinjaSpoilers(ABC):
         for key in updated_key_list:
             statement = f"{statement} {convert_key_case_to_camel_case(key)} = :{key},"
         return statement.rstrip(',')
+
+    @staticmethod
+    def validate_user_uuid_format(user_id):
+        try:
+            UUID(user_id)
+        except ValueError:
+            raise HTTPPreConditionFailed("Incorrect UUID in UserId")
+
