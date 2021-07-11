@@ -9,6 +9,9 @@ from uuid import UUID
 
 
 def convert_key_case_to_camel_case(key):
+    """
+    Convert snake case to camel case
+    """
     # split underscore using split
     temp = key.split('_')
     res = temp[0] + ''.join(ele.title() for ele in temp[1:])
@@ -29,4 +32,7 @@ def replace_decimals(obj):
 
 
 def convert_hex_to_uuid(hex_value):
+    """
+    Convert hex value string to valid UUID string
+    """
     return str(UUID(hex_value))
