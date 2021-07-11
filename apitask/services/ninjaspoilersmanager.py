@@ -24,7 +24,6 @@ class NinjaSpoilersManager:
         resource = self.event.get("resource", "")
         if resource == Resources.CREATE_USER.value:
             manager_obj = NinjaSpoilersUsers()
-            response = manager_obj.create_user()
             body = self.event.get("body", {})
             name = body.get("name", "")
             if name:
