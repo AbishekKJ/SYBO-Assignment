@@ -22,6 +22,7 @@ class NinjaSpoilersManager:
             'Access-Control-Allow-Origin': '*'
         }}
         resource = self.event.get("resource", "")
+        print("Event", self.event)
         if resource == Resources.CREATE_USER.value:
             manager_obj = NinjaSpoilersUsers()
             body = self.event.get("body", {})
