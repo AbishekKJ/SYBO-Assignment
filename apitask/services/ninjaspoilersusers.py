@@ -17,6 +17,12 @@ class NinjaSpoilersUsers(NinjaSpoilers):
 
     def create_user(self, name):
         user_table = self.aws_resource.Table("Users")
+        user_data = user_table.get_item(Key={
+           "username": name
+        })
+        user_data = user_data.get("Item", {})
+        if user_data:
+            raise HTTPUnProcessableEntity("User already exist")
         user_id = str(uuid1())
         user_data = {
             "id": user_id,
@@ -27,11 +33,5 @@ class NinjaSpoilersUsers(NinjaSpoilers):
             "friendsList": [],
             "highScore": 0
         }
-        user_data = user_table.get_item(Key={
-           "username": name
-        })
-        user_data = user_data.get("Item", {})
-        if user_data:
-            raise HTTPUnProcessableEntity("User already exist")
         user_table.put_item(Item=user_data)
         return {"id": user_id, "name": name}
