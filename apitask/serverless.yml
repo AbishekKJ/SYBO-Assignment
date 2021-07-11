@@ -22,12 +22,11 @@ frameworkVersion: '2'
 
 plugins:
   - serverless-python-requirements
-
 provider:
   name: aws
   runtime: python3.8
   lambdaHashingVersion: 20201221
-  region: ap-south-1
+  region: us-east-1
 
 
 functions:
