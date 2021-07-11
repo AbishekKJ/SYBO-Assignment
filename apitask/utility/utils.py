@@ -7,6 +7,7 @@ Date: 09-Jul-2021
 import decimal
 from uuid import UUID
 
+
 def convert_key_case_to_camel_case(key):
     # split underscore using split
     temp = key.split('_')
