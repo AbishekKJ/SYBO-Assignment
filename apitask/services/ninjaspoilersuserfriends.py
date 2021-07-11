@@ -20,9 +20,18 @@ class NinjaSpoilersUserFriends(NinjaSpoilers):
         self.validate_user_uuid_format(self.user_id)
 
     def update_friends(self, friends_data):
+        """
+        Updates user's friends detail to DB
+        """
         if ["friends"] != sorted(friends_data):
             raise HTTPUnProcessableEntity(f"Invalid request. Request body should contain only the following keys - "
                                           f"{','.join(['friends'])}")
+        if not isinstance(friends_data.get("friends"), list):
+            raise HTTPUnProcessableEntity(f"Invalid request. friends should be a list of id's")
+
+        friends_id = friends_data.get("friends")
+        for ids in friends_id:
+            self.validate_user_uuid_format(ids, True)
         user_table = self.aws_resource.Table("Users")
         user_data = user_table.get_item(Key={
             'id': self.user_id,
@@ -49,6 +58,9 @@ class NinjaSpoilersUserFriends(NinjaSpoilers):
             }
 
     def get_friends(self, page_no=1, item_count=10):
+        """
+        Loads User friends game state and scores with Pagination of records
+        """
         friends_data = []
         dynamo_resource = self.aws_resource
         user_table = dynamo_resource.Table("Users")
