@@ -9,7 +9,7 @@ from uuid import uuid1, UUID
 
 import boto3
 
-from utility import convert_key_case_to_camel_case, HTTPPreConditionFailed
+from utility import convert_key_case_to_camel_case, HTTPUnProcessableEntity
 
 
 class NinjaSpoilers(ABC):
@@ -38,4 +38,4 @@ class NinjaSpoilers(ABC):
         try:
             UUID(user_id)
         except ValueError:
-            raise HTTPPreConditionFailed("Incorrect UUID in UserId")
+            raise HTTPUnProcessableEntity("Incorrect UUID in UserId")
