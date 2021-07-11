@@ -26,11 +26,13 @@ class NinjaSpoilersManager:
         if http_method in ["PUT", "POST"]:
             header = self.event.get("headers")
             content_type = header.get("content-type")
-            if content_type == "application/json":
+            if content_type != "application/json":
                 response["statusCode"] = 412
                 data = {
                     "error": "Invalid content type. Only Json format is allowed"
                 }
+                response["body"] = json.dumps(data)
+                return response
         try:
             if resource == Resources.CREATE_USER.value:
                 manager_obj = NinjaSpoilersUsers()
