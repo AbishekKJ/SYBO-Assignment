@@ -59,7 +59,7 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
         user_data_update_statement = self.prepare_update_db_statement(list(updated_user_data.keys()))
         user_table.update_item(
             Key={
-                "id": self.user_id
+                "username": user_data.get("username")
             },
             UpdateExpression=user_data_update_statement,
             ExpressionAttributeValues=updated_user_data
