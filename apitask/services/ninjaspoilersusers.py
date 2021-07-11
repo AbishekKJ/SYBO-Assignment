@@ -4,7 +4,7 @@ Author: Abishek KJ
 Date: 09-Jul-2021
 """
 
-from ..services import NinjaSpoilers
+from .ninjaspoilersbase import NinjaSpoilers
 from uuid import uuid1
 from datetime import datetime
 

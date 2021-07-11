@@ -4,9 +4,9 @@ Author: Abishek KJ
 Date: 09-Jul-2021
 """
 
-from ..services import NinjaSpoilers
+from .ninjaspoilersbase import NinjaSpoilers
 
-from ..utility.exception import HTTPError
+from utility.exception import HTTPError
 
 
 class NinjaSpoilersUserGames(NinjaSpoilers):
