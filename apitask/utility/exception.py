@@ -6,6 +6,7 @@ Date: 10-Jul-2021
 
 
 class HTTPError(Exception):
+    __module__ = "CustomException"
 
     def __init__(self, status_code, error_msg):
         self.status = status_code
@@ -13,6 +14,7 @@ class HTTPError(Exception):
 
 
 class HTTPPreConditionFailed(Exception):
+    __module__ = "CustomException"
 
     def __init__(self, error_msg):
         self.status = 412
@@ -20,7 +22,9 @@ class HTTPPreConditionFailed(Exception):
 
 
 class HTTPUnProcessableEntity(Exception):
+    __module__ = "CustomException"
 
     def __init__(self, error_msg):
+        print("error msg", error_msg)
         self.status = 422
         self.error_msg = error_msg
