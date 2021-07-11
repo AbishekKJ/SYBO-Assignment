@@ -39,4 +39,3 @@ class NinjaSpoilers(ABC):
             UUID(user_id)
         except ValueError:
             raise HTTPPreConditionFailed("Incorrect UUID in UserId")
-
