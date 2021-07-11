@@ -25,6 +25,5 @@ class HTTPUnProcessableEntity(Exception):
     __module__ = "CustomException"
 
     def __init__(self, error_msg):
-        print("error msg", error_msg)
         self.status = 422
         self.error_msg = error_msg
