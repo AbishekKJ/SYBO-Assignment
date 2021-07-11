@@ -38,23 +38,23 @@ functions:
     memorySize: 1024
     events:
       - http:
-          path: ${self:service}/user
+          path: ${self:service}/api/v1/user
           method: post
           cors: true
       - http:
-          path: ${self:service}/user/{userId}/state
+          path: ${self:service}/api/v1/user/{userId}/state
           method: put
           cors: true
       - http:
-          path: ${self:service}/user/{userId}/state
+          path: ${self:service}/api/v1/user/{userId}/state
           method: get
           cors: true
       - http:
-          path: ${self:service}/user/{userId}/friends
+          path: ${self:service}/api/v1/user/{userId}/friends
           method: put
           cors: true
       - http:
-          path: ${self:service}/user/{userId}/friends
+          path: ${self:service}/api/v1/user/{userId}/friends
           method: get
           cors: true
 
