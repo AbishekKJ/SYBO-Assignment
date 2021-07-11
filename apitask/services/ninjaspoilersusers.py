@@ -7,6 +7,7 @@ Date: 09-Jul-2021
 from .ninjaspoilersbase import NinjaSpoilers
 from uuid import uuid1
 from datetime import datetime
+from utility import HTTPUnProcessableEntity
 
 
 class NinjaSpoilersUsers(NinjaSpoilers):
@@ -15,7 +16,7 @@ class NinjaSpoilersUsers(NinjaSpoilers):
         self.aws_resource = self.get_aws_resource("dynamodb")
 
     def create_user(self, name):
-        table = self.aws_resource.Table("Users")
+        user_table = self.aws_resource.Table("Users")
         user_id = str(uuid1())
         user_data = {
             "id": user_id,
@@ -26,8 +27,11 @@ class NinjaSpoilersUsers(NinjaSpoilers):
             "friendsList": [],
             "highScore": 0
         }
-        try:
-            table.put_item(Item=user_data)
-            return {"id": user_id, "name": name}
-        except Exception as e:
-            pass
+        user_data = user_table.get_item(Key={
+           "username": name
+        })
+        user_data = user_data.get("Item", {})
+        if user_data:
+            raise HTTPUnProcessableEntity("User already exist")
+        user_table.put_item(Item=user_data)
+        return {"id": user_id, "name": name}
