@@ -9,7 +9,7 @@ from uuid import uuid1
 
 import boto3
 
-from ..utility import convert_key_case_to_camel_case
+from apitask.utility import convert_key_case_to_camel_case
 
 
 class NinjaSpoilers(ABC):
