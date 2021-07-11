@@ -20,11 +20,14 @@ class NinjaSpoilersUsers(NinjaSpoilers):
         user_data = {
             "id": user_id,
             "createdAt": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "name": name,
+            "username": name,
             "scores": [],
             "gamesPlayed": [],
             "friendsList": [],
             "highScore": 0
         }
-        table.put_item(Item=user_data)
-        return {"id": user_id, "name": name}
+        try:
+            table.put_item(Item=user_data)
+            return {"id": user_id, "name": name}
+        except Exception as e:
+            pass

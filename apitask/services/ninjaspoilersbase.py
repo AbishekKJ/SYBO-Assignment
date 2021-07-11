@@ -8,6 +8,7 @@ from abc import ABC
 from uuid import uuid1, UUID
 
 import boto3
+from boto3.dynamodb.conditions import Key
 
 from utility import convert_key_case_to_camel_case, HTTPUnProcessableEntity
 
@@ -55,3 +56,8 @@ class NinjaSpoilers(ABC):
             else:
                 message = "Incorrect UUID in UserId"
             raise HTTPUnProcessableEntity(message)
+
+    def get_user_by_id(self, table_obj, user_id):
+        user_data = table_obj.query(IndexName="id-index",
+                                    KeyConditionExpression=Key('id').eq(self.user_id))
+        return user_data.get("Items", [])

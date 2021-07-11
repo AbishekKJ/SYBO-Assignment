@@ -33,6 +33,7 @@ class NinjaSpoilersManager:
                 if key.lower() == "content-type":
                     content_type = header.get(key, "")
                     break
+            print("Content-type", content_type)
             if content_type != "application/json":
                 response["statusCode"] = 412
                 data = {

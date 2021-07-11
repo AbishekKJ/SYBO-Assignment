@@ -32,27 +32,24 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
         games_table = self.aws_resource.Table("Games")
         high_score_table = self.aws_resource.Table("HighScore")
         game_id = self.get_random_id("game")
-        user_data = user_table.get_item(Key={
-            'id': self.user_id,
-        })
-        user_data = user_data.get("Item")
+        user_data = self.get_user_by_id(user_table, self.user_id)
         if not user_data:
             raise HTTPError(404, "DATA_NOT_FOUND")
-        if user_data:
-            updated_user_data = {}
-            scores = user_data.get("scores")
-            games_played = user_data.get("gamesPlayed")
-            high_score = user_data.get("highScore")
-            games_played.append({"gameId": game_id,
-                                 "id": game_data.get("gamesPlayed")})
-            if high_score:
-                if game_data.get("score") > high_score:
-                    high_score = game_data.get("score")
-                    updated_user_data[":high_score"] = high_score
-            else:
+        user_data = user_data[0]
+        updated_user_data = {}
+        scores = user_data.get("scores")
+        games_played = user_data.get("gamesPlayed")
+        high_score = user_data.get("highScore")
+        games_played.append({"gameId": game_id,
+                             "id": game_data.get("gamesPlayed")})
+        if high_score:
+            if game_data.get("score") > high_score:
                 high_score = game_data.get("score")
                 updated_user_data[":high_score"] = high_score
-            scores.append(game_data.get("score"))
+        else:
+            high_score = game_data.get("score")
+            updated_user_data[":high_score"] = high_score
+        scores.append(game_data.get("score"))
 
         updated_user_data.update({
             ":scores": scores,
@@ -88,13 +85,10 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
         Load user game state from db
         """
         user_table = self.aws_resource.Table("Users")
-        user_data = user_table.get_item(Key={
-            'id': self.user_id,
-        })
-        user_data = user_data.get("Item")
+        user_data = self.get_user_by_id(user_table, self.user_id)
         if not user_data:
             raise HTTPError(404, "USER_DATA_NOT_FOUND")
-        if user_data:
-            return {"gamesPlayed": len(user_data.get("gamesPlayed")),
-                    "score": replace_decimals(user_data.get("highScore"))}
+        user_data = user_data[0]
+        return {"gamesPlayed": len(user_data.get("gamesPlayed")),
+                "score": replace_decimals(user_data.get("highScore"))}
 
