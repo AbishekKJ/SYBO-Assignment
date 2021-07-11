@@ -36,7 +36,7 @@ class NinjaSpoilersManager:
             if content_type != "application/json":
                 response["statusCode"] = 412
                 data = {
-                    "error": "Invalid content type. Only Json format is allowed"
+                    "error": "Invalid content type. Use content type application/json"
                 }
                 response["body"] = json.dumps(data)
                 return response
