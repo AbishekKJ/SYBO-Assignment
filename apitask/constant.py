@@ -9,8 +9,8 @@ from enum import Enum
 
 class Resources(Enum):
     CREATE_USER = "/user"
-    LOAD_SAVE_GAME_STATE = "/user/{userid}/state"
-    UPDATE_GET_FRIENDS = "/user/{userid}/friends"
+    LOAD_SAVE_GAME_STATE = "/user/{userId}/state"
+    UPDATE_GET_FRIENDS = "/user/{userId}/friends"
 
 
 dynamo_db_batch_count = 100
