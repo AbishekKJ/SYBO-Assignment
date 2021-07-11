@@ -40,19 +40,19 @@ functions:
           method: post
           cors: true
       - http:
-          path: /user/{userId}/state
+          path: ${self:service}/user/{userId}/state
           method: put
           cors: true
       - http:
-          path: /user/{userId}/state
+          path: ${self:service}/user/{userId}/state
           method: get
           cors: true
       - http:
-          path: /user/{userId}/friends
+          path: ${self:service}/user/{userId}/friends
           method: put
           cors: true
       - http:
-          path: /user/{userId}/friends
+          path: ${self:service}/user/{userId}/friends
           method: get
           cors: true
 
