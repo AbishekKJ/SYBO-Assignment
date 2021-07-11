@@ -25,6 +25,8 @@ plugins:
 provider:
   name: aws
   runtime: python3.8
+  deploymentBucket:
+    name: serverlesssyboassignment
   lambdaHashingVersion: 20201221
   region: us-east-1
 
