@@ -4,6 +4,8 @@ Author: Abishek KJ
 Date: 09-Jul-2021
 """
 
+import re
+from uuid import UUID
 from .ninjaspoilersbase import NinjaSpoilers
 
 from utility import HTTPError, replace_decimals
@@ -15,6 +17,7 @@ class NinjaSpoilersUserFriends(NinjaSpoilers):
     def __init__(self, user_id):
         self.user_id = user_id
         self.aws_resource = self.get_aws_resource("dynamodb")
+        self.validate_user_uuid_format(self.user_id)
 
     def update_friends(self, friends_data):
         user_table = self.aws_resource.Table("Users")

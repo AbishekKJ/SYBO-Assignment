@@ -7,6 +7,7 @@ Date: 09-Jul-2021
 from .ninjaspoilersbase import NinjaSpoilers
 
 from utility.exception import HTTPError
+from utility.utils import replace_decimals
 
 
 class NinjaSpoilersUserGames(NinjaSpoilers):
@@ -14,6 +15,7 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
     def __init__(self, user_id):
         self.user_id = user_id
         self.aws_resource = self.get_aws_resource("dynamodb")
+        self.validate_user_uuid_format(self.user_id)
 
     def save_game_state(self, game_data):
         user_table = self.aws_resource.Table("Users")
@@ -81,5 +83,5 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
             raise HTTPError(404, "USER_DATA_NOT_FOUND")
         if user_data:
             return {"gamesPlayed": len(user_data.get("gamesPlayed")),
-                    "score": user_data.get("highScore")}
+                    "score": replace_decimals(user_data.get("highScore"))}
 
