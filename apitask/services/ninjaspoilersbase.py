@@ -54,4 +54,4 @@ class NinjaSpoilers(ABC):
                 message = "Incorrect UUID in friendsId"
             else:
                 message = "Incorrect UUID in UserId"
-        raise HTTPUnProcessableEntity(message)
+            raise HTTPUnProcessableEntity(message)
