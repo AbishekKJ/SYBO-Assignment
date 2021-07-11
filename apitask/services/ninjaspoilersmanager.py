@@ -42,7 +42,6 @@ class NinjaSpoilersManager:
                 return response
         try:
             if resource == Resources.CREATE_USER.value:
-                print("Inside")
                 manager_obj = NinjaSpoilersUsers()
                 body = json.loads(self.event.get("body", {}))
                 name = body.get("name", "")
