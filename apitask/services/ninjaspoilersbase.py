@@ -18,15 +18,24 @@ class NinjaSpoilers(ABC):
 
     @staticmethod
     def get_aws_resource(aws_resource):
+        """
+        Returns AWS resource connection object
+        """
         return boto3.resource(aws_resource)
 
     @staticmethod
     def get_random_id(event_prefix):
+        """
+        Generates random id for unique key
+        """
         random_id = f"{event_prefix}_{uuid1().hex}"
         return random_id
 
     @staticmethod
     def prepare_update_db_statement(updated_key_list):
+        """
+        Prepares the set expression statement for the keys passed
+        """
         statement = "SET"
         updated_key_list = [key.lstrip(":") for key in updated_key_list]
         for key in updated_key_list:
@@ -35,6 +44,9 @@ class NinjaSpoilers(ABC):
 
     @staticmethod
     def validate_user_uuid_format(user_id, user_friends=False):
+        """
+        Validate the uuid1 format for the id's passed
+        """
         try:
             UUID(user_id)
         except ValueError:
