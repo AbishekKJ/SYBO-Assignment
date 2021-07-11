@@ -18,6 +18,9 @@ class NinjaSpoilersManager:
         self.context = context
 
     def run(self):
+        """
+        Manager class for all the ninja spoilers feature classes
+        """
         response = {"headers": {
             'Access-Control-Allow-Origin': '*'
         }}
