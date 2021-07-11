@@ -8,7 +8,7 @@ import re
 from uuid import UUID
 from .ninjaspoilersbase import NinjaSpoilers
 
-from utility import HTTPError, replace_decimals
+from utility import HTTPError, HTTPUnProcessableEntity, replace_decimals
 from constant import dynamo_db_batch_count
 
 
@@ -20,6 +20,9 @@ class NinjaSpoilersUserFriends(NinjaSpoilers):
         self.validate_user_uuid_format(self.user_id)
 
     def update_friends(self, friends_data):
+        if ["friends"] != sorted(friends_data):
+            raise HTTPUnProcessableEntity(f"Invalid request. Request body should contain only the following keys - "
+                                          f"{','.join(['friends'])}")
         user_table = self.aws_resource.Table("Users")
         user_data = user_table.get_item(Key={
             'id': self.user_id,

@@ -6,8 +6,7 @@ Date: 09-Jul-2021
 
 from .ninjaspoilersbase import NinjaSpoilers
 
-from utility.exception import HTTPError
-from utility.utils import replace_decimals
+from utility import HTTPError, HTTPUnProcessableEntity, replace_decimals
 
 
 class NinjaSpoilersUserGames(NinjaSpoilers):
@@ -18,6 +17,9 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
         self.validate_user_uuid_format(self.user_id)
 
     def save_game_state(self, game_data):
+        if ["gamesPlayed", "score"] != sorted(game_data):
+            raise HTTPUnProcessableEntity(f"Invalid request. Request body should contain only the following keys - "
+                                          f"{','.join(['gamesPlayed', 'score'])}")
         user_table = self.aws_resource.Table("Users")
         games_table = self.aws_resource.Table("Games")
         high_score_table = self.aws_resource.Table("HighScore")
