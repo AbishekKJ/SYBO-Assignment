@@ -61,7 +61,6 @@ class NinjaSpoilersManager:
                     elif http_method == "PUT":
                         game_data = self.event.get("body")
                         if game_data:
-                            print("game data", game_data)
                             game_data = json.loads(game_data)
                             data = manager_obj.save_game_state(game_data)
                         else:
