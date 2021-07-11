@@ -5,8 +5,8 @@ Date: 09-Jul-2021
 """
 
 import json
-from apitask.services import *
-from apitask.constant import Resources
+from ..services import *
+from ..constant import Resources
 
 
 class NinjaSpoilersManager:

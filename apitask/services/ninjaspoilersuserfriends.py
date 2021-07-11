@@ -4,10 +4,10 @@ Author: Abishek KJ
 Date: 09-Jul-2021
 """
 
-from apitask.services import NinjaSpoilers
+from ..services import NinjaSpoilers
 
-from apitask.utility import HTTPError, replace_decimals
-from apitask.constant import dynamo_db_batch_count
+from ..utility import HTTPError, replace_decimals
+from ..constant import dynamo_db_batch_count
 
 
 class NinjaSpoilersUserFriends(NinjaSpoilers):
