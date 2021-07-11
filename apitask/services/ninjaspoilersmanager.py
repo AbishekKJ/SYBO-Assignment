@@ -5,11 +5,9 @@ Date: 09-Jul-2021
 """
 
 import json
-from services.ninjaspoilersbase import NinjaSpoilers
 from services.ninjaspoilersusergames import NinjaSpoilersUserGames
 from services.ninjaspoilersusers import NinjaSpoilersUsers
 from services.ninjaspoilersuserfriends import NinjaSpoilersUserFriends
-from services.ninjaspoilersmanager import NinjaSpoilersManager
 from constant import Resources
 
 
