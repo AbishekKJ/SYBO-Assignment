@@ -38,7 +38,7 @@ functions:
     memorySize: 1024
     events:
       - http:
-          path: /user
+          path: ${self:service}/user
           method: post
           cors: true
       - http:
