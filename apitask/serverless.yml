@@ -31,7 +31,7 @@ provider:
 
 functions:
   NinjaSpoilerService:
-    handler: handler.get_ninja_user_services
+    handler: handler.get_ninja_spoilers_user_services
     timeout: 30
     memorySize: 1024
     events:
