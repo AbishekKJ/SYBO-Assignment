@@ -78,9 +78,9 @@ class NinjaSpoilersUserFriends(NinjaSpoilers):
                 friends_data.append(data[0])
             else:
                 friends_data_not_found_list.append(ids)
-        if friends_data_not_found_list:
-            raise HTTPUnProcessableEntity(f"No data found for the friends "
-                                          f"ids-{','.join(friends_data_not_found_list)}")
+        # if friends_data_not_found_list:
+        #     raise HTTPUnProcessableEntity(f"No data found for the friends "
+        #                                   f"ids-{','.join(friends_data_not_found_list)}")
 
         batch_friends_list = [friends_data[i:i + DYNAMO_DB_BATCH_COUNT]
                               for i in range(0, len(friends_data), DYNAMO_DB_BATCH_COUNT)]
