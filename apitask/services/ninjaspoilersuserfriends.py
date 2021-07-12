@@ -14,6 +14,7 @@ class NinjaSpoilersUserFriends(NinjaSpoilers):
     """
     Update and retrieve friends details class
     """
+
     def __init__(self, user_id):
         super().__init__()
         self.user_id = user_id
@@ -60,7 +61,7 @@ class NinjaSpoilersUserFriends(NinjaSpoilers):
         """
         Loads User friends game state and scores with Pagination of records
         """
-        friends_data = []
+        friends_details = []
         dynamo_resource = self.aws_resource
         user_table = dynamo_resource.Table("Users")
         user_data = self.get_user_by_id(user_table, self.user_id)
@@ -68,7 +69,17 @@ class NinjaSpoilersUserFriends(NinjaSpoilers):
             raise HTTPError(404, "USER_DATA_NOT_FOUND")
         user_data = user_data[0]
         friends_list = user_data.get("friendsList", [])
-        friends_data = [self.get_user_by_id(user_table, ids)[0] for ids in friends_list]
+        friends_data = []
+        friends_data_not_found_list = []
+        for ids in friends_list:
+            data = self.get_user_by_id(user_table, ids)
+            if data:
+                friends_data.append(data[0])
+            else:
+                friends_data_not_found_list.append(ids)
+        if friends_data_not_found_list:
+            raise HTTPUnProcessableEntity(f"No data found for the friends ids{','.join(friends_data_not_found_list)}")
+
         batch_friends_list = [friends_data[i:i + DYNAMO_DB_BATCH_COUNT] for i in range(0, len(friends_data),
                                                                                        DYNAMO_DB_BATCH_COUNT)]
         for ids in batch_friends_list:
@@ -77,9 +88,10 @@ class NinjaSpoilersUserFriends(NinjaSpoilers):
                 "ProjectionExpression": "id, username, highScore, createdAt"
             }
             })
-            friends_data.extend(resp.get("Responses", {}).get("Users", []))
-        friends_data = replace_decimals(friends_data)
-        sorted_data = sorted(friends_data, key=lambda i: i['createdAt'])
+            print("Response, resp")
+            friends_details.extend(resp.get("Responses", {}).get("Users", []))
+        friends_details = replace_decimals(friends_details)
+        sorted_data = sorted(friends_details, key=lambda i: i['createdAt'])
         start_range = (page_no - 1) * item_count
         end_range = page_no * item_count
         return {
