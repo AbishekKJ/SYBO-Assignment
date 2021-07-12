@@ -16,6 +16,7 @@ class NinjaSpoilersManager:
     """
     Manager class for all ninja services
     """
+
     def __init__(self, event, context):
         self.event = event
         self.context = context
@@ -28,9 +29,10 @@ class NinjaSpoilersManager:
         data = {}
         if not body:
             data = {
-                "statusCode" : 412,
+                "statusCode": 412,
                 "error": "Request body cannot be empty"
             }
+            return data
         for key in list(header.keys()):
             if key.lower() == "content-type":
                 content_type = header.get(key, "")
@@ -107,4 +109,3 @@ class NinjaSpoilersManager:
             response["statusCode"] = 200
             response["body"] = json.dumps(data)
             return response
-
