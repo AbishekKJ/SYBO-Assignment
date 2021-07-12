@@ -21,6 +21,9 @@ class NinjaSpoilersUsers(NinjaSpoilers):
         self.aws_resource = self.get_aws_resource("dynamodb")
 
     def create_user(self, name):
+        """
+        Create user method
+        """
         if not name.isalnum():
             raise HTTPUnProcessableEntity("name should be alphanumeric")
         user_table = self.aws_resource.Table("Users")
