@@ -93,11 +93,11 @@ class TestNinjaSpoilerServices(unittest.TestCase):
 
         with self.assertRaises(HTTPUnProcessableEntity):
             user_obj = NinjaSpoilersUsers()
-            resp = user_obj.create_user({"names": ""})
+            resp = user_obj.create_user({"name": ""})
 
     def test_user_games_validations(self):
         """
-        Test Create user error validations
+        Test Create user games error validations
         """
         with self.assertRaises(HTTPUnProcessableEntity):
             user_obj = NinjaSpoilersUserGames("bb333e0d-e30b-11eb-8366-61eeb2b58c4c")
@@ -120,7 +120,7 @@ class TestNinjaSpoilerServices(unittest.TestCase):
 
     def test_user_friends_validations(self):
         """
-        Test Create user error validations
+        Test Create user friends error validations
         """
         with self.assertRaises(HTTPUnProcessableEntity):
             user_obj = NinjaSpoilersUserFriends("bb333e0d-e30b-11eb-8366-61eeb2b58c4c")
