@@ -9,6 +9,7 @@ from services.ninjaspoilersusergames import NinjaSpoilersUserGames
 from services.ninjaspoilersusers import NinjaSpoilersUsers
 from services.ninjaspoilersuserfriends import NinjaSpoilersUserFriends
 from constant import Resources
+from utility import HTTPError
 
 
 class NinjaSpoilersManager:
@@ -18,6 +19,29 @@ class NinjaSpoilersManager:
     def __init__(self, event, context):
         self.event = event
         self.context = context
+
+    @staticmethod
+    def validate_content_type_body(body, header):
+        """
+        Validate the body and header of the request
+        """
+        data = {}
+        if not body:
+            data = {
+                "statusCode" : 412,
+                "error": "Request body cannot be empty"
+            }
+        for key in list(header.keys()):
+            if key.lower() == "content-type":
+                content_type = header.get(key, "")
+                break
+        print("Content-type", content_type)
+        if content_type != "application/json":
+            data = {
+                "statusCode": 412,
+                "error": "Invalid content type. Use content type application/json"
+            }
+        return data
 
     def run(self):
         """
@@ -29,70 +53,32 @@ class NinjaSpoilersManager:
         print("Event object", self.event)
         resource = self.event.get("resource", "")
         http_method = self.event.get("httpMethod")
-        if http_method in ["PUT", "POST"]:
-            if not self.event.get("body", {}):
-                response["statusCode"] = 412
-                data = {
-                    "error": "Request body cannot be empty"
-                }
-                response["body"] = json.dumps(data)
-                return response
-            header = self.event.get("headers")
-            for key in list(header.keys()):
-                if key.lower() == "content-type":
-                    content_type = header.get(key, "")
-                    break
-            print("Content-type", content_type)
-            if content_type != "application/json":
-                response["statusCode"] = 412
-                data = {
-                    "error": "Invalid content type. Use content type application/json"
-                }
-                response["body"] = json.dumps(data)
-                return response
+        path_parameters = self.event.get("pathParameters")
+        body = self.event.get("body", "")
+        header = self.event.get("headers")
         try:
+            if http_method in ["PUT", "POST"]:
+                data = self.validate_content_type_body(body, header)
+                if len(data):
+                    raise HTTPError(412, data.get("error"))
             if resource == Resources.CREATE_USER.value:
                 manager_obj = NinjaSpoilersUsers()
-                body = json.loads(self.event.get("body", {}))
+                body = json.loads(body)
                 name = body.get("name", "")
-                if name:
-                    data = manager_obj.create_user(name)
-                    response["statusCode"] = 200
-                else:
-                    response["statusCode"] = 422
-                    data = {
-                        "error": "Name should be valid"
-                    }
+                data = manager_obj.create_user(name)
                 response["body"] = json.dumps(data)
-                return response
             elif resource == Resources.LOAD_SAVE_GAME_STATE.value:
-                path_parameters = self.event.get("pathParameters")
                 if path_parameters:
                     user_id = path_parameters.get("userId")
                     manager_obj = NinjaSpoilersUserGames(user_id)
                     if http_method == "GET":
                         data = manager_obj.load_game_state()
-                        response["statusCode"] = 200
                     elif http_method == "PUT":
-                        game_data = self.event.get("body")
-                        if game_data:
-                            game_data = json.loads(game_data)
-                            data = manager_obj.save_game_state(game_data)
-                            response["statusCode"] = 200
-                        else:
-                            response["statusCode"] = 412
-                            data = {
-                                "error": "Request body cannot be empty"
-                            }
+                        game_data = json.loads(body)
+                        data = manager_obj.save_game_state(game_data)
                 else:
-                    response["statusCode"] = 400
-                    data = {
-                        "error": "Bad request"
-                    }
-                response["body"] = json.dumps(data)
-                return response
+                    raise HTTPError(400, "Bad request")
             elif resource == Resources.UPDATE_GET_FRIENDS.value:
-                path_parameters = self.event.get("pathParameters")
                 if path_parameters:
                     user_id = path_parameters.get("userId")
                     manager_obj = NinjaSpoilersUserFriends(user_id)
@@ -104,25 +90,11 @@ class NinjaSpoilersManager:
                             data = manager_obj.get_friends(page_no, item_count)
                         else:
                             data = manager_obj.get_friends()
-                        response["statusCode"] = 200
                     elif http_method == "PUT":
-                        friends_data = self.event.get("body")
-                        if friends_data:
-                            friends_data = json.loads(friends_data)
-                            data = manager_obj.update_friends(friends_data)
-                            response["statusCode"] = 200
-                        else:
-                            response["statusCode"] = 412
-                            data = {
-                                "error": "Request body cannot be empty"
-                            }
+                        friends_data = json.loads(body)
+                        data = manager_obj.update_friends(friends_data)
                 else:
-                    response["statusCode"] = 400
-                    data = {
-                        "error": "Bad request"
-                    }
-                response["body"] = json.dumps(data)
-                return response
+                    raise HTTPError(400, "Bad request")
         except Exception as e:
             if "__module__" in dir(e):
                 if e.__module__ == "CustomException":
@@ -131,3 +103,8 @@ class NinjaSpoilersManager:
                     response["body"] = json.dumps(data)
                     return response
             raise
+        else:
+            response["statusCode"] = 200
+            response["body"] = json.dumps(data)
+            return response
+

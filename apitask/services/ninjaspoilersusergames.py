@@ -12,6 +12,7 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
     """
     Load and Save game state class for user
     """
+
     def __init__(self, user_id):
         super().__init__()
         self.user_id = user_id
@@ -23,12 +24,13 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
         Save user game state to db
         """
         if ["gamesPlayed", "score"] != sorted(game_data):
-            raise HTTPUnProcessableEntity(f"Invalid request. Request body should contain only the following keys - "
-                                          f"{','.join(['gamesPlayed', 'score'])}")
+            raise HTTPUnProcessableEntity(
+                f"Invalid request. Request body should contain only the following keys - "
+                f"{','.join(['gamesPlayed', 'score'])}")
         if not isinstance(game_data.get("gamesPlayed"), int):
-            raise HTTPUnProcessableEntity(f"gamesPlayed should be integer")
+            raise HTTPUnProcessableEntity("gamesPlayed should be integer")
         if not isinstance(game_data.get("score"), int):
-            raise HTTPUnProcessableEntity(f"score should be integer")
+            raise HTTPUnProcessableEntity("score should be integer")
 
         user_table = self.aws_resource.Table("Users")
         games_table = self.aws_resource.Table("Games")
@@ -44,7 +46,7 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
         if len(games_played) < game_data.get("gamesPlayed"):
             game_id = self.get_random_id("game")
             games_played.append({"gameId": game_id,
-                                "id": game_data.get("gamesPlayed")})
+                                 "id": game_data.get("gamesPlayed")})
             updated_user_data[":games_played"] = games_played
             scores.append(game_data.get("score"))
             updated_user_data[":scores"] = scores
@@ -59,7 +61,8 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
         else:
             high_score = game_data.get("score")
             updated_user_data[":high_score"] = high_score
-        user_data_update_statement = self.prepare_update_db_statement(list(updated_user_data.keys()))
+        user_data_update_statement = self.prepare_update_db_statement(
+            list(updated_user_data.keys()))
         user_table.update_item(
             Key={
                 "username": user_data.get("username")
@@ -96,4 +99,3 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
         user_data = user_data[0]
         return {"gamesPlayed": len(user_data.get("gamesPlayed")),
                 "score": replace_decimals(user_data.get("highScore"))}
-

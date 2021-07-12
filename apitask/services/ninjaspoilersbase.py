@@ -18,7 +18,7 @@ class NinjaSpoilers(ABC):
     Base class for Ninja spoilers service
     """
     def __init__(self):
-        super().__init__()
+        pass
 
     @staticmethod
     def get_aws_resource(aws_resource):
@@ -60,7 +60,11 @@ class NinjaSpoilers(ABC):
                 message = "Incorrect UUID in UserId"
             raise HTTPUnProcessableEntity(message)
 
-    def get_user_by_id(self, table_obj, user_id):
+    @staticmethod
+    def get_user_by_id(table_obj, user_id):
+        """
+        Get the user details by user id
+        """
         user_data = table_obj.query(IndexName="id-index",
                                     KeyConditionExpression=Key('id').eq(user_id))
         return user_data.get("Items", [])
