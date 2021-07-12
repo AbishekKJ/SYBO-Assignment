@@ -35,8 +35,9 @@ class NinjaSpoilersUserFriends(NinjaSpoilers):
         if not user_data:
             raise HTTPError(404, "DATA_NOT_FOUND")
         user_data = user_data[0]
-        friends_list = user_data.get("friendsList", [])
-        friends_list.extend(friends_data.get("friends"))
+        # friends_list = user_data.get("friendsList", [])
+        # friends_list.extend(friends_data.get("friends"))
+        friends_list = friends_data.get("friends")
         update_data = {
             ":friends_list": friends_list
         }
