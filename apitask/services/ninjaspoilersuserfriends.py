@@ -68,8 +68,8 @@ class NinjaSpoilersUserFriends(NinjaSpoilers):
             raise HTTPError(404, "USER_DATA_NOT_FOUND")
         user_data = user_data[0]
         friends_list = user_data.get("friendsList", [])
-        batch_friends_list = [friends_list[i:i + dynamo_db_batch_count] for i in range(0, len(friends_list),
-                                                                                       dynamo_db_batch_count)]
+        batch_friends_list = [friends_list[i:i + DYNAMO_DB_BATCH_COUNT] for i in range(0, len(friends_list),
+                                                                                       DYNAMO_DB_BATCH_COUNT)]
         for ids in batch_friends_list:
             resp = dynamo_resource.batch_get_item(RequestItems={"Users": {
                 "Keys": [{'id': friend_id} for friend_id in ids],
