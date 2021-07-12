@@ -123,6 +123,7 @@ botocore | 1.20.108
 
 * Written python program to convert open api swagger yaml file to html file for the api documentation purpose.
 * Documentation contains api details, success response and error responses
+* Folder documentation has the yaml file and html file for the api documentation
 
 # Documentation screenshot:
 
