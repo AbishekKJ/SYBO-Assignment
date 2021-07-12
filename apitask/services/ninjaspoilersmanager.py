@@ -63,11 +63,13 @@ class NinjaSpoilersManager:
                     manager_obj = NinjaSpoilersUserGames(user_id)
                     if http_method == "GET":
                         data = manager_obj.load_game_state()
+                        response["statusCode"] = 200
                     elif http_method == "PUT":
                         game_data = self.event.get("body")
                         if game_data:
                             game_data = json.loads(game_data)
                             data = manager_obj.save_game_state(game_data)
+                            response["statusCode"] = 200
                         else:
                             response["statusCode"] = 422
                             data = {
@@ -86,12 +88,20 @@ class NinjaSpoilersManager:
                     user_id = path_parameters.get("userId")
                     manager_obj = NinjaSpoilersUserFriends(user_id)
                     if http_method == "GET":
-                        data = manager_obj.get_friends()
+                        query_params = self.event.get("queryStringParameters", {})
+                        if query_params:
+                            page_no = query_params.get("pageNo")
+                            item_count = query_params.get("itemCount")
+                            data = manager_obj.get_friends(page_no, item_count)
+                        else:
+                            data = manager_obj.get_friends()
+                        response["statusCode"] = 200
                     elif http_method == "PUT":
                         friends_data = self.event.get("body")
                         if friends_data:
                             friends_data = json.loads(friends_data)
                             data = manager_obj.update_friends(friends_data)
+                            response["statusCode"] = 200
                         else:
                             response["statusCode"] = 422
                             data = {
