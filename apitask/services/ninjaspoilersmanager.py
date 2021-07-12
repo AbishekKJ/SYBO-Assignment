@@ -12,7 +12,7 @@ from constant import Resources
 
 
 class NinjaSpoilersManager:
-
+    """"""
     def __init__(self, event, context):
         self.event = event
         self.context = context

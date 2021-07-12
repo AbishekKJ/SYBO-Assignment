@@ -14,6 +14,7 @@ from utility import convert_key_case_to_camel_case, HTTPUnProcessableEntity
 
 
 class NinjaSpoilers(ABC):
+    """"""
     def __init__(self):
         pass
 

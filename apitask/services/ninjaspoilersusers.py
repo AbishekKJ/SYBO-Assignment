@@ -12,7 +12,7 @@ from .ninjaspoilersbase import NinjaSpoilers
 
 
 class NinjaSpoilersUsers(NinjaSpoilers):
-
+    """"""
     def __init__(self):
         self.aws_resource = self.get_aws_resource("dynamodb")
 
