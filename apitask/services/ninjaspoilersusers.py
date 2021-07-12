@@ -23,7 +23,7 @@ class NinjaSpoilersUsers(NinjaSpoilers):
         })
         user_data = user_data.get("Item", {})
         if user_data:
-            raise HTTPUnProcessableEntity("User already exist")
+            raise HTTPUnProcessableEntity("name already taken")
         user_id = str(uuid1())
         user_data = {
             "id": user_id,
