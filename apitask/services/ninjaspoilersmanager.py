@@ -22,6 +22,18 @@ class NinjaSpoilersManager:
         self.context = context
 
     @staticmethod
+    def validate_pagination_query_parameter(page_no, item_count):
+        try:
+            page_no = int(page_no)
+            item_count = int(item_count)
+        except ValueError:
+            raise HTTPError(412, "Pagination Query params should be integer")
+        except TypeError:
+            raise HTTPError(412, "Pagination Query params should be integer")
+        else:
+            return page_no, item_count
+
+    @staticmethod
     def validate_content_type_body(body, header):
         """
         Validate the body and header of the request
@@ -70,11 +82,11 @@ class NinjaSpoilersManager:
                 response["body"] = json.dumps(data)
             elif resource == Resources.GET_ALL_USERS.value:
                 manager_obj = NinjaSpoilersUsers()
-                userdata = json.loads(body)
                 query_params = self.event.get("queryStringParameters", {})
                 if query_params:
                     page_no = query_params.get("page")
                     item_count = query_params.get("perPage")
+                    page_no, item_count = self.validate_pagination_query_parameter(page_no, item_count)
                     data = manager_obj.get_users(page_no, item_count)
                 else:
                     data = manager_obj.get_users()
