@@ -15,19 +15,25 @@ class NinjaSpoilersUsers(NinjaSpoilers):
     """
     Create user class
     """
+
     def __init__(self):
         super().__init__()
         self.aws_resource = self.get_aws_resource("dynamodb")
 
-    def create_user(self, name):
+    def create_user(self, name_data):
         """
         Create user method
         """
+        if ["name"] != sorted(name_data):
+            raise HTTPUnProcessableEntity(f"Invalid request. "
+                                          f"Request body should contain only the following keys - "
+                                          f"{','.join(['name'])}")
+        name = name_data.get("name", "")
         if not name.isalnum():
             raise HTTPUnProcessableEntity("name should be alphanumeric")
         user_table = self.aws_resource.Table("Users")
         user_data = user_table.get_item(Key={
-           "username": name
+            "username": name
         })
         user_data = user_data.get("Item", {})
         if user_data:
