@@ -42,7 +42,7 @@ class NinjaSpoilersUsers(NinjaSpoilers):
         user_data = {
             "id": user_id,
             "createdAt": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "username": name,
+            "userName": name,
             "scores": [],
             "gamesPlayed": [],
             "friendsList": [],
