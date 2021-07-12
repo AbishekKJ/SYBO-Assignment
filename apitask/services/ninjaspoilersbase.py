@@ -62,5 +62,5 @@ class NinjaSpoilers(ABC):
 
     def get_user_by_id(self, table_obj, user_id):
         user_data = table_obj.query(IndexName="id-index",
-                                    KeyConditionExpression=Key('id').eq(self.user_id))
+                                    KeyConditionExpression=Key('id').eq(user_id))
         return user_data.get("Items", [])

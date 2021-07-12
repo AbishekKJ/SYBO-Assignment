@@ -78,7 +78,7 @@ class NinjaSpoilersUserFriends(NinjaSpoilers):
             else:
                 friends_data_not_found_list.append(ids)
         if friends_data_not_found_list:
-            raise HTTPUnProcessableEntity(f"No data found for the friends ids{','.join(friends_data_not_found_list)}")
+            raise HTTPUnProcessableEntity(f"No data found for the friends ids-{','.join(friends_data_not_found_list)}")
 
         batch_friends_list = [friends_data[i:i + DYNAMO_DB_BATCH_COUNT] for i in range(0, len(friends_data),
                                                                                        DYNAMO_DB_BATCH_COUNT)]
@@ -92,6 +92,7 @@ class NinjaSpoilersUserFriends(NinjaSpoilers):
             friends_details.extend(resp.get("Responses", {}).get("Users", []))
         friends_details = replace_decimals(friends_details)
         sorted_data = sorted(friends_details, key=lambda i: i['createdAt'])
+        sorted_data = [{k: v for k, v in d.items() if k != 'createdAt'} for d in sorted_data]
         start_range = (page_no - 1) * item_count
         end_range = page_no * item_count
         return {
