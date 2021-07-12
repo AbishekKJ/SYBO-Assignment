@@ -64,12 +64,13 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
             ExpressionAttributeValues=updated_user_data
         )
         # Update Games and HighScore table as this is future implementations
-        game_details = {
-            "id": game_id,
-            "usedId": self.user_id,
-            "score": game_data.get("score")
-        }
-        games_table.put_item(Item=game_details)
+        if ":games_played" in updated_user_data:
+            game_details = {
+                "id": game_id,
+                "usedId": self.user_id,
+                "score": game_data.get("score")
+            }
+            games_table.put_item(Item=game_details)
 
         if ":highScore" in updated_user_data:
             high_score_details = {
