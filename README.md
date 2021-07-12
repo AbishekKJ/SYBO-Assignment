@@ -62,43 +62,43 @@ DynamoDB | NA
 
 # POSTMAN screenshot:
 
-Create User:
+**Create User**:
 
 <p align="center">
   <img src="./img/postman/createuser.png" alt="Size Limit CLI" width="738">
 </p>
 
-Save Game State:
+**Save Game State**:
 
 <p align="center">
   <img src="./img/postman/savegamestate.png" alt="Size Limit CLI" width="738">
 </p>
 
-Load Game State:
+**Load Game State**:
 
 <p align="center">
   <img src="./img/postman/loadgamestate.png" alt="Size Limit CLI" width="738">
 </p>
 
-Update User Friends:
+**Update User Friends**:
 
 <p align="center">
   <img src="./img/postman/updateuserfriends.png" alt="Size Limit CLI" width="738">
 </p>
 
-Get User Friends:
+**Get User Friends**:
 
 <p align="center">
   <img src="./img/postman/getuserfriends.png" alt="Size Limit CLI" width="738">
 </p>
 
-Get All Users:
+**Get All Users**:
 
 <p align="center">
   <img src="./img/postman/getusers.png" alt="Size Limit CLI" width="738">
 </p>
 
-#Python code to access the endpoint:
+# Python code to access the endpoint:
 ```python
 import requests
 url = "https://evv5qsaiwh.execute-api.us-east-1.amazonaws.com/dev/ninjaSpoilers/api/v1/user/b1f96348-e332-11eb-bbd0-bd8af4b9dcff/state"
