@@ -12,7 +12,7 @@ from services.ninjaspoilersuserfriends import NinjaSpoilersUserFriends
 
 
 class TestNinjaSpoilerServices(unittest.TestCase):
-
+    """"""
     def test_create_user(self):
         user_obj = NinjaSpoilersUsers()
         user_list = ["Abishek", "Suganya", "Sudhakar", "Sathish", "Bref", "Vishnu"]
