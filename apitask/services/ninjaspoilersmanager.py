@@ -28,6 +28,13 @@ class NinjaSpoilersManager:
         resource = self.event.get("resource", "")
         http_method = self.event.get("httpMethod")
         if http_method in ["PUT", "POST"]:
+            if not self.event.get("body", {}):
+                response["statusCode"] = 412
+                data = {
+                    "error": "Request body cannot be empty"
+                }
+                response["body"] = json.dumps(data)
+                return response
             header = self.event.get("headers")
             for key in list(header.keys()):
                 if key.lower() == "content-type":
@@ -71,14 +78,14 @@ class NinjaSpoilersManager:
                             data = manager_obj.save_game_state(game_data)
                             response["statusCode"] = 200
                         else:
-                            response["statusCode"] = 422
+                            response["statusCode"] = 412
                             data = {
                                 "error": "Request body cannot be empty"
                             }
                 else:
-                    response["statusCode"] = 422
+                    response["statusCode"] = 400
                     data = {
-                        "error": "User id should be valid"
+                        "error": "Bad request"
                     }
                 response["body"] = json.dumps(data)
                 return response
@@ -103,14 +110,14 @@ class NinjaSpoilersManager:
                             data = manager_obj.update_friends(friends_data)
                             response["statusCode"] = 200
                         else:
-                            response["statusCode"] = 422
+                            response["statusCode"] = 412
                             data = {
                                 "error": "Request body cannot be empty"
                             }
                 else:
-                    response["statusCode"] = 422
+                    response["statusCode"] = 400
                     data = {
-                        "error": "User id should be valid"
+                        "error": "Bad request"
                     }
                 response["body"] = json.dumps(data)
                 return response
