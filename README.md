@@ -62,6 +62,8 @@ DynamoDB | NA
 
 # POSTMAN screenshot:
 
+**Postman collection** - https://www.getpostman.com/collections/4472dc5f4078102e5fda
+
 **Create User**:
 
 <p align="center">
