@@ -46,7 +46,8 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
             games_played.append({"gameId": game_id,
                                 "id": game_data.get("gamesPlayed")})
             updated_user_data[":games_played"] = games_played
-            updated_user_data[":scores"] = scores.append(game_data.get("score"))
+            scores.append(game_data.get("score"))
+            updated_user_data[":scores"] = scores
         else:
             game_index = {games_played[i].get("gamesPlayed"): 0 for i in range(1, len(games_played))}
             scores[game_index.get(game_data.get("gamesPlayed"))] = game_data.get("score")
