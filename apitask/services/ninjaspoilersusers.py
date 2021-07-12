@@ -7,7 +7,7 @@ Date: 09-Jul-2021
 from uuid import uuid1
 from datetime import datetime
 
-from utility import HTTPUnProcessableEntity
+from utility import HTTPUnProcessableEntity, replace_decimals
 from .ninjaspoilersbase import NinjaSpoilers
 
 
@@ -60,6 +60,7 @@ class NinjaSpoilersUsers(NinjaSpoilers):
         sorted_data = sorted(data, key=lambda i: i['createdAt'])
         display_list = ["id", "userName", "gamesPlayed", "highScore"]
         sorted_data = [{k: v for k, v in d.items() if k in display_list} for d in sorted_data]
+        sorted_data = replace_decimals(sorted_data)
         return {
             "users": sorted_data[start_range:end_range],
             "totalCount": len(sorted_data)
