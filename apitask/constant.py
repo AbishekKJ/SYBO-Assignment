@@ -13,4 +13,4 @@ class Resources(Enum):
     UPDATE_GET_FRIENDS = "/ninjaSpoilers/api/v1/user/{userId}/friends"
 
 
-dynamo_db_batch_count = 100
+DYNAMO_DB_BATCH_COUNT = 100
