@@ -62,9 +62,9 @@ class NinjaSpoilersUsers(NinjaSpoilers):
         display_list = ["id", "userName", "gamesPlayed", "highScore"]
         sorted_data = [{k: v for k, v in d.items() if k in display_list} for d in sorted_data]
         sorted_data = replace_decimals(sorted_data)
-        order_data = OrderedDict()
         order_data_list = []
         for i in sorted_data:
+            order_data = OrderedDict()
             order_data['id'] = i.get("id")
             order_data['userName'] = i.get("userName")
             order_data['gamesPlayed'] = len(i.get("gamesPlayed"))
