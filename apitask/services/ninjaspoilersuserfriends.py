@@ -58,7 +58,7 @@ class NinjaSpoilersUserFriends(NinjaSpoilers):
             "message": "Friends list updated"
         }
 
-    def get_friends(self, page_no=1, item_count=10):
+    def get_friends(self):
         """
         Loads User friends game state and scores with Pagination of records
         """
@@ -95,8 +95,6 @@ class NinjaSpoilersUserFriends(NinjaSpoilers):
         friends_details = replace_decimals(friends_details)
         sorted_data = sorted(friends_details, key=lambda i: i['createdAt'])
         sorted_data = [{k: v for k, v in d.items() if k != 'createdAt'} for d in sorted_data]
-        start_range = (page_no - 1) * item_count
-        end_range = page_no * item_count
         return {
-            "friends": sorted_data[start_range:end_range]
+            "friends": sorted_data
         }
