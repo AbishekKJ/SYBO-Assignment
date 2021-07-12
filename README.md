@@ -147,6 +147,7 @@ Create User:
 * Written separate unit test cases for each of the api functions
 * Utilized **Coverage** module to identify the code coverage of all services for the games
 * Overall coverage of **90%** achieved
+* Individual coverage details of the modules are available inside the coverage_html folder as html files.
 
 <p align="center">
   <img src="./img/coverage/unittest.png" alt="Size Limit CLI" width="738">
@@ -154,6 +155,10 @@ Create User:
 
 <p align="center">
   <img src="./img/coverage/coverage.png" alt="Size Limit CLI" width="738">
+</p>
+
+<p align="center">
+  <img src="./img/coverage/coveragehtml.png" alt="Size Limit CLI" width="738">
 </p>
 
 # Code Quality Standards using Pylint:
