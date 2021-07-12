@@ -7,7 +7,7 @@ Date: 09-Jul-2021
 from .ninjaspoilersbase import NinjaSpoilers
 
 from utility import HTTPError, HTTPUnProcessableEntity, replace_decimals
-from constant import dynamo_db_batch_count
+from constant import DYNAMO_DB_BATCH_COUNT
 
 
 class NinjaSpoilersUserFriends(NinjaSpoilers):
