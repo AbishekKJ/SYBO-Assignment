@@ -63,8 +63,8 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
             UpdateExpression=user_data_update_statement,
             ExpressionAttributeValues=updated_user_data
         )
-        # Update commented as this is future implementations
-        """game_details = {
+        # Update Games and HighScore table as this is future implementations
+        game_details = {
             "id": game_id,
             "usedId": self.user_id,
             "score": game_data.get("score")
@@ -76,7 +76,7 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
                 "id": self.user_id,
                 "score": game_data.get("score")
             }
-            high_score_table.put_item(Item=high_score_details)"""
+            high_score_table.put_item(Item=high_score_details)
 
         return {"message": "Data updated successfully"}
 
