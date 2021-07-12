@@ -6,6 +6,7 @@ Date: 09-Jul-2021
 
 from uuid import uuid1
 from datetime import datetime
+from collections import OrderedDict
 
 from utility import HTTPUnProcessableEntity, replace_decimals
 from .ninjaspoilersbase import NinjaSpoilers
@@ -57,11 +58,19 @@ class NinjaSpoilersUsers(NinjaSpoilers):
         data = response['Items']
         start_range = (page_no - 1) * item_count
         end_range = page_no * item_count
-        sorted_data = sorted(data, key=lambda i: i['createdAt'])
+        sorted_data = sorted(data, key=lambda k: k['createdAt'])
         display_list = ["id", "userName", "gamesPlayed", "highScore"]
         sorted_data = [{k: v for k, v in d.items() if k in display_list} for d in sorted_data]
         sorted_data = replace_decimals(sorted_data)
+        order_data = OrderedDict()
+        order_data_list = []
+        for i in sorted_data:
+            order_data['id'] = i.get("id")
+            order_data['userName'] = i.get("userName")
+            order_data['gamesPlayed'] = len(i.get("gamesPlayed"))
+            order_data['highScore'] = i.get("highScore")
+            order_data_list.append(order_data)
         return {
-            "users": sorted_data[start_range:end_range],
-            "totalCount": len(sorted_data)
+            "users": order_data_list[start_range:end_range],
+            "totalCount": len(order_data_list)
         }
