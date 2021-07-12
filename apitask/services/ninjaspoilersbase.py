@@ -14,9 +14,11 @@ from utility import convert_key_case_to_camel_case, HTTPUnProcessableEntity
 
 
 class NinjaSpoilers(ABC):
-    """"""
+    """
+    Base class for Ninja spoilers service
+    """
     def __init__(self):
-        pass
+        super().__init__()
 
     @staticmethod
     def get_aws_resource(aws_resource):

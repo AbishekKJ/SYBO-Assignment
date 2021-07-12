@@ -13,8 +13,11 @@ from .ninjaspoilersbase import NinjaSpoilers
 
 
 class NinjaSpoilersUsers(NinjaSpoilers):
-    """"""
+    """
+    Create user class
+    """
     def __init__(self):
+        super().__init__()
         self.aws_resource = self.get_aws_resource("dynamodb")
 
     def create_user(self, name):

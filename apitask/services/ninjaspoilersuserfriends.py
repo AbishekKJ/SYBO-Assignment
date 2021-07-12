@@ -11,8 +11,11 @@ from .ninjaspoilersbase import NinjaSpoilers
 
 
 class NinjaSpoilersUserFriends(NinjaSpoilers):
-    """"""
+    """
+    Update and retrieve friends details class
+    """
     def __init__(self, user_id):
+        super().__init__()
         self.user_id = user_id
         self.aws_resource = self.get_aws_resource("dynamodb")
         self.validate_user_uuid_format(self.user_id)

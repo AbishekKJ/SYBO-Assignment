@@ -9,7 +9,9 @@ from .ninjaspoilersbase import NinjaSpoilers
 
 
 class NinjaSpoilersUserGames(NinjaSpoilers):
-    """"""
+    """
+    Load and Save game state class for user
+    """
     def __init__(self, user_id):
         super().__init__()
         self.user_id = user_id

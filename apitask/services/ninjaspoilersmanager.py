@@ -12,7 +12,9 @@ from constant import Resources
 
 
 class NinjaSpoilersManager:
-    """"""
+    """
+    Manager class for all ninja services
+    """
     def __init__(self, event, context):
         self.event = event
         self.context = context
