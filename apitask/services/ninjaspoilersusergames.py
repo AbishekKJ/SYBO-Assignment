@@ -30,7 +30,6 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
         user_table = self.aws_resource.Table("Users")
         games_table = self.aws_resource.Table("Games")
         high_score_table = self.aws_resource.Table("HighScore")
-        game_id = self.get_random_id("game")
         user_data = self.get_user_by_id(user_table, self.user_id)
         if not user_data:
             raise HTTPError(404, "DATA_NOT_FOUND")
@@ -39,8 +38,16 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
         scores = user_data.get("scores")
         games_played = user_data.get("gamesPlayed")
         high_score = user_data.get("highScore")
-        games_played.append({"gameId": game_id,
-                             "id": game_data.get("gamesPlayed")})
+        if len(games_played) < game_data.get("gamesPlayed"):
+            game_id = self.get_random_id("game")
+            games_played.append({"gameId": game_id,
+                                "id": game_data.get("gamesPlayed")})
+            updated_user_data[":games_played"] = games_played
+            updated_user_data[":scores"] = scores.append(game_data.get("score"))
+        else:
+            game_index = {games_played[i].get("gamesPlayed"): 0 for i in range(1, len(games_played))}
+            scores[game_index.get(game_data.get("gamesPlayed"))] = game_data.get("score")
+            updated_user_data[":scores"] = scores
         if high_score:
             if game_data.get("score") > high_score:
                 high_score = game_data.get("score")
@@ -48,13 +55,6 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
         else:
             high_score = game_data.get("score")
             updated_user_data[":high_score"] = high_score
-        scores.append(game_data.get("score"))
-
-        updated_user_data.update({
-            ":scores": scores,
-            ":games_played": games_played
-
-        })
         user_data_update_statement = self.prepare_update_db_statement(list(updated_user_data.keys()))
         user_table.update_item(
             Key={
@@ -63,7 +63,8 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
             UpdateExpression=user_data_update_statement,
             ExpressionAttributeValues=updated_user_data
         )
-        game_details = {
+        # Update commented as this is future implementations
+        """game_details = {
             "id": game_id,
             "usedId": self.user_id,
             "score": game_data.get("score")
@@ -75,7 +76,7 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
                 "id": self.user_id,
                 "score": game_data.get("score")
             }
-            high_score_table.put_item(Item=high_score_details)
+            high_score_table.put_item(Item=high_score_details)"""
 
         return {"message": "Data updated successfully"}
 
