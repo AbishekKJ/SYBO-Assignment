@@ -179,6 +179,22 @@ Pylint is a source-code, bug and quality checker for the Python programming lang
 
 # Performance and Load testing using Locust framework:
 
+* utilized locust tool to perform load testing
+* Generated 100 concurrent create user request at a hatch rate of 10 users per second
+* Median response time for create user is less than 400 milli-seconds
+
+<p align="center">
+  <img src="./img/locust/locust1.png" alt="Size Limit CLI" width="738">
+</p>
+
+<p align="center">
+  <img src="./img/locust/locust2.png" alt="Size Limit CLI" width="738">
+</p>
+
+<p align="center">
+  <img src="./img/locust/locust3.png" alt="Size Limit CLI" width="738">
+</p>
+
 
 # Prerequisite for running serverless:
 
