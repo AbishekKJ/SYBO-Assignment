@@ -79,7 +79,7 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
             }
             games_table.put_item(Item=game_details)
 
-        if ":highScore" in updated_user_data:
+        if ":high_Score" in updated_user_data:
             high_score_details = {
                 "id": self.user_id,
                 "score": game_data.get("score")
