@@ -4,6 +4,7 @@ Author: Abishek KJ
 Date: 09-Jul-2021
 """
 
+import re
 from uuid import uuid1
 from datetime import datetime
 
@@ -17,6 +18,8 @@ class NinjaSpoilersUsers(NinjaSpoilers):
         self.aws_resource = self.get_aws_resource("dynamodb")
 
     def create_user(self, name):
+        if not name.isalnum():
+            raise HTTPUnProcessableEntity("name should be alphanumeric")
         user_table = self.aws_resource.Table("Users")
         user_data = user_table.get_item(Key={
            "username": name
