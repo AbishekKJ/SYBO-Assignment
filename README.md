@@ -60,7 +60,7 @@ DynamoDB | NA
   <img src="./img/dynamodb/highscoretable.png" alt="Size Limit CLI" width="738">
 </p>
 
-POSTMAN screenshot:
+# POSTMAN screenshot:
 
 Create User:
 
