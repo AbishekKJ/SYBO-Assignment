@@ -26,7 +26,8 @@ class NinjaSpoilersUserFriends(NinjaSpoilers):
         Updates user's friends detail to DB
         """
         if ["friends"] != sorted(friends_data):
-            raise HTTPUnProcessableEntity(f"Invalid request. Request body should contain only the following keys - "
+            raise HTTPUnProcessableEntity(f"Invalid request. "
+                                          f"Request body should contain only the following keys - "
                                           f"{','.join(['friends'])}")
         if not isinstance(friends_data.get("friends"), list):
             raise HTTPUnProcessableEntity(f"Invalid request. friends should be a list of id's")
@@ -78,10 +79,11 @@ class NinjaSpoilersUserFriends(NinjaSpoilers):
             else:
                 friends_data_not_found_list.append(ids)
         if friends_data_not_found_list:
-            raise HTTPUnProcessableEntity(f"No data found for the friends ids-{','.join(friends_data_not_found_list)}") # pylint: disable=line-too-long
+            raise HTTPUnProcessableEntity(f"No data found for the friends "
+                                          f"ids-{','.join(friends_data_not_found_list)}")
 
-        batch_friends_list = [friends_data[i:i + DYNAMO_DB_BATCH_COUNT] for i in range(0, len(friends_data),
-                                                                                       DYNAMO_DB_BATCH_COUNT)] # pylint: disable=line-too-long
+        batch_friends_list = [friends_data[i:i + DYNAMO_DB_BATCH_COUNT]
+                              for i in range(0, len(friends_data), DYNAMO_DB_BATCH_COUNT)]
         for ids in batch_friends_list:
             resp = dynamo_resource.batch_get_item(RequestItems={"Users": {
                 "Keys": [{'username': friend_id.get("username")} for friend_id in ids],
