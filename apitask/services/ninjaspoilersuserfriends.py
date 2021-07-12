@@ -68,11 +68,12 @@ class NinjaSpoilersUserFriends(NinjaSpoilers):
             raise HTTPError(404, "USER_DATA_NOT_FOUND")
         user_data = user_data[0]
         friends_list = user_data.get("friendsList", [])
-        batch_friends_list = [friends_list[i:i + DYNAMO_DB_BATCH_COUNT] for i in range(0, len(friends_list),
+        friends_data = [self.get_user_by_id(user_table, id)[0] for ids in friends_list]
+        batch_friends_list = [friends_data[i:i + DYNAMO_DB_BATCH_COUNT] for i in range(0, len(friends_data),
                                                                                        DYNAMO_DB_BATCH_COUNT)]
         for ids in batch_friends_list:
             resp = dynamo_resource.batch_get_item(RequestItems={"Users": {
-                "Keys": [{'id': friend_id} for friend_id in ids],
+                "Keys": [{'username': friend_id.get("username")} for friend_id in ids],
                 "ProjectionExpression": "id, #name, highScore, createdAt",
                 "ExpressionAttributeNames": {'#name': 'name'}
             }
