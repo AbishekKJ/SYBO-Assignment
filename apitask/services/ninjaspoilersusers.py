@@ -4,7 +4,6 @@ Author: Abishek KJ
 Date: 09-Jul-2021
 """
 
-import re
 from uuid import uuid1
 from datetime import datetime
 
