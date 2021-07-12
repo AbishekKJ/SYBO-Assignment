@@ -14,4 +14,3 @@ def get_ninja_spoilers_user_services(event, context):
     manager_obj = NinjaSpoilersManager(event, context)
     response = manager_obj.run()
     return response
-
