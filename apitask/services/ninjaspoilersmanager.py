@@ -65,9 +65,8 @@ class NinjaSpoilersManager:
                     raise HTTPError(412, data.get("error"))
             if resource == Resources.CREATE_USER.value:
                 manager_obj = NinjaSpoilersUsers()
-                body = json.loads(body)
-                name = body.get("name", "")
-                data = manager_obj.create_user(name)
+                userdata = json.loads(body)
+                data = manager_obj.create_user(userdata)
                 response["body"] = json.dumps(data)
             elif resource == Resources.LOAD_SAVE_GAME_STATE.value:
                 if path_parameters:
