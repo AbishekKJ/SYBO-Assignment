@@ -49,7 +49,7 @@ class NinjaSpoilersUserFriends(NinjaSpoilers):
         user_data_update_statement = self.prepare_update_db_statement(list(update_data.keys()))
         user_table.update_item(
             Key={
-                "username": user_data.get("username")
+                "userName": user_data.get("username")
             },
             UpdateExpression=user_data_update_statement,
             ExpressionAttributeValues=update_data
@@ -86,8 +86,8 @@ class NinjaSpoilersUserFriends(NinjaSpoilers):
                               for i in range(0, len(friends_data), DYNAMO_DB_BATCH_COUNT)]
         for ids in batch_friends_list:
             resp = dynamo_resource.batch_get_item(RequestItems={"Users": {
-                "Keys": [{'username': friend_id.get("username")} for friend_id in ids],
-                "ProjectionExpression": "id, username, highScore, createdAt"
+                "Keys": [{'userName': friend_id.get("username")} for friend_id in ids],
+                "ProjectionExpression": "id, userName, highScore, createdAt"
             }
             })
             print("Response, resp")

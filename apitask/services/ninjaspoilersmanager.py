@@ -68,6 +68,11 @@ class NinjaSpoilersManager:
                 userdata = json.loads(body)
                 data = manager_obj.create_user(userdata)
                 response["body"] = json.dumps(data)
+            elif resource == Resources.GET_ALL_USERS.value:
+                manager_obj = NinjaSpoilersUsers()
+                userdata = json.loads(body)
+                data = manager_obj.create_user(userdata)
+                response["body"] = json.dumps(data)
             elif resource == Resources.LOAD_SAVE_GAME_STATE.value:
                 if path_parameters:
                     user_id = path_parameters.get("userId")

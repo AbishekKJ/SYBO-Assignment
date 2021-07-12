@@ -33,7 +33,7 @@ class NinjaSpoilersUsers(NinjaSpoilers):
             raise HTTPUnProcessableEntity("name should be alphanumeric")
         user_table = self.aws_resource.Table("Users")
         user_data = user_table.get_item(Key={
-            "username": name
+            "userName": name
         })
         user_data = user_data.get("Item", {})
         if user_data:
@@ -50,3 +50,17 @@ class NinjaSpoilersUsers(NinjaSpoilers):
         }
         user_table.put_item(Item=user_data)
         return {"id": user_id, "name": name}
+
+    def get_users(self, page_no=1, item_count=10):
+        user_table = self.aws_resource.Table("Users")
+        response = user_table.scan()
+        data = response['Items']
+        start_range = (page_no - 1) * item_count
+        end_range = page_no * item_count
+        sorted_data = sorted(data, key=lambda i: i['createdAt'])
+        display_list = ["id", "userName", "gamesPlayed", "highScore"]
+        sorted_data = [{k: v for k, v in d.items() if k in display_list} for d in sorted_data]
+        return {
+            "users": sorted_data[start_range:end_range],
+            "totalCount": len(sorted_data)
+        }
