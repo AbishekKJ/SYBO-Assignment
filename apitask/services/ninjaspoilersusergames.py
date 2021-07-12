@@ -4,9 +4,8 @@ Author: Abishek KJ
 Date: 09-Jul-2021
 """
 
-from .ninjaspoilersbase import NinjaSpoilers
-
 from utility import HTTPError, HTTPUnProcessableEntity, replace_decimals
+from .ninjaspoilersbase import NinjaSpoilers
 
 
 class NinjaSpoilersUserGames(NinjaSpoilers):
