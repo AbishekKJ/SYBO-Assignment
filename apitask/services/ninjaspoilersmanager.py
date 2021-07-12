@@ -71,7 +71,13 @@ class NinjaSpoilersManager:
             elif resource == Resources.GET_ALL_USERS.value:
                 manager_obj = NinjaSpoilersUsers()
                 userdata = json.loads(body)
-                data = manager_obj.create_user(userdata)
+                query_params = self.event.get("queryStringParameters", {})
+                if query_params:
+                    page_no = query_params.get("page")
+                    item_count = query_params.get("perPage")
+                    data = manager_obj.get_users(page_no, item_count)
+                else:
+                    data = manager_obj.get_users()
                 response["body"] = json.dumps(data)
             elif resource == Resources.LOAD_SAVE_GAME_STATE.value:
                 if path_parameters:
@@ -89,13 +95,7 @@ class NinjaSpoilersManager:
                     user_id = path_parameters.get("userId")
                     manager_obj = NinjaSpoilersUserFriends(user_id)
                     if http_method == "GET":
-                        query_params = self.event.get("queryStringParameters", {})
-                        if query_params:
-                            page_no = query_params.get("pageNo")
-                            item_count = query_params.get("itemCount")
-                            data = manager_obj.get_friends(page_no, item_count)
-                        else:
-                            data = manager_obj.get_friends()
+                        data = manager_obj.get_friends()
                     elif http_method == "PUT":
                         friends_data = json.loads(body)
                         data = manager_obj.update_friends(friends_data)
