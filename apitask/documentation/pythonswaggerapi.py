@@ -64,8 +64,6 @@ window.onload = function() {
 </body>
 </html>
 """
-print("Converting")
-
 spec = yaml.load(input_stream, Loader=yaml.FullLoader)
 print("Received")
 sys.stdout.write(TEMPLATE % json.dumps(spec))
