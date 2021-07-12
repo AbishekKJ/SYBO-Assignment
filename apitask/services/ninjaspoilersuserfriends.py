@@ -4,10 +4,10 @@ Author: Abishek KJ
 Date: 09-Jul-2021
 """
 
-from .ninjaspoilersbase import NinjaSpoilers
-
 from utility import HTTPError, HTTPUnProcessableEntity, replace_decimals
 from constant import DYNAMO_DB_BATCH_COUNT
+
+from .ninjaspoilersbase import NinjaSpoilers
 
 
 class NinjaSpoilersUserFriends(NinjaSpoilers):
