@@ -20,7 +20,7 @@ Note:
 
 # v2 APIs:
 
-As we have the implemented the api to support current requirement as mentioned in the document. For v2 APIs please refer the presentation in v2roadmapsuggestions.
+As we have implemented the api to support current requirement as mentioned in the document. For v2 APIs please refer the presentation in v2roadmapsuggestions.
 
 # Task:
 
