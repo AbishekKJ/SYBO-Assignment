@@ -71,6 +71,8 @@ DynamoDB | NA
 
 **Postman collection** - https://www.getpostman.com/collections/4472dc5f4078102e5fda
 
+Note: once user is created using the POST /api/v1/user API, please replace the userId in other endpoints with the created one. 
+
 **Create User**:
 
 <p align="center">
