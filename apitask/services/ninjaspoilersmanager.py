@@ -9,7 +9,7 @@ from services.ninjaspoilersusergames import NinjaSpoilersUserGames
 from services.ninjaspoilersusers import NinjaSpoilersUsers
 from services.ninjaspoilersuserfriends import NinjaSpoilersUserFriends
 from constant import Resources
-from utility import HTTPError
+from utility import HTTPError, HTTPPreConditionFailed
 
 
 class NinjaSpoilersManager:
@@ -27,9 +27,9 @@ class NinjaSpoilersManager:
             page_no = int(page_no)
             item_count = int(item_count)
         except ValueError:
-            raise HTTPError(412, "Pagination Query params should be integer")
+            raise HTTPPreConditionFailed("Pagination Query params should be integer")
         except TypeError:
-            raise HTTPError(412, "Pagination Query params should be integer")
+            raise HTTPPreConditionFailed("Pagination Query params should be integer")
         else:
             return page_no, item_count
 
@@ -74,7 +74,7 @@ class NinjaSpoilersManager:
             if http_method in ["PUT", "POST"]:
                 data = self.validate_content_type_body(body, header)
                 if len(data):
-                    raise HTTPError(412, data.get("error"))
+                    raise HTTPPreConditionFailed(data.get("error"))
             if resource == Resources.CREATE_USER.value:
                 manager_obj = NinjaSpoilersUsers()
                 userdata = json.loads(body)

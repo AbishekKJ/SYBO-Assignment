@@ -38,7 +38,7 @@ class NinjaSpoilersUserFriends(NinjaSpoilers):
         user_table = self.aws_resource.Table("Users")
         user_data = self.get_user_by_id(user_table, self.user_id)
         if not user_data:
-            raise HTTPError(404, "DATA_NOT_FOUND")
+            raise HTTPError(404, "User not found")
         user_data = user_data[0]
         # friends_list = user_data.get("friendsList", [])
         # friends_list.extend(friends_data.get("friends"))
@@ -67,7 +67,7 @@ class NinjaSpoilersUserFriends(NinjaSpoilers):
         user_table = dynamo_resource.Table("Users")
         user_data = self.get_user_by_id(user_table, self.user_id)
         if not user_data:
-            raise HTTPError(404, "USER_DATA_NOT_FOUND")
+            raise HTTPError(404, "User not found")
         user_data = user_data[0]
         friends_list = user_data.get("friendsList", [])
         friends_data = []
