@@ -37,22 +37,27 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
         high_score_table = self.aws_resource.Table("HighScore")
         user_data = self.get_user_by_id(user_table, self.user_id)
         if not user_data:
-            raise HTTPError(404, "DATA_NOT_FOUND")
+            raise HTTPError(404, "User not found")
         user_data = user_data[0]
         updated_user_data = {}
         scores = user_data.get("scores")
         games_played = user_data.get("gamesPlayed")
         high_score = user_data.get("highScore")
-        if len(games_played) < game_data.get("gamesPlayed"):
+        game_exists = False
+        for i in range(len(games_played)):
+            game = games_played[i]
+            if game.get("id") == game_data.get("gamesPlayed"):
+                game_id = game.get("gameId")
+                game_exists = True
+                scores[i] = game_data.get("score")
+                updated_user_data[":scores"] = scores
+                break
+        if not game_exists:
             game_id = self.get_random_id("game")
             games_played.append({"gameId": game_id,
                                  "id": game_data.get("gamesPlayed")})
             updated_user_data[":games_played"] = games_played
             scores.append(game_data.get("score"))
-            updated_user_data[":scores"] = scores
-        else:
-            game_index = {games_played[i].get("id"): i for i in range(0, len(games_played))}
-            scores[game_index.get(game_data.get("gamesPlayed"))] = game_data.get("score")
             updated_user_data[":scores"] = scores
         if high_score:
             if game_data.get("score") > high_score:
@@ -71,7 +76,7 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
             ExpressionAttributeValues=updated_user_data
         )
         # Update Games and HighScore table as this is future implementations
-        if ":games_played" in updated_user_data:
+        if ":games_played" in updated_user_data or game_exists:
             game_details = {
                 "id": game_id,
                 "usedId": self.user_id,
@@ -79,7 +84,7 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
             }
             games_table.put_item(Item=game_details)
 
-        if ":high_Score" in updated_user_data:
+        if ":high_score" in updated_user_data:
             high_score_details = {
                 "id": self.user_id,
                 "score": game_data.get("score")
@@ -95,7 +100,7 @@ class NinjaSpoilersUserGames(NinjaSpoilers):
         user_table = self.aws_resource.Table("Users")
         user_data = self.get_user_by_id(user_table, self.user_id)
         if not user_data:
-            raise HTTPError(404, "USER_DATA_NOT_FOUND")
+            raise HTTPError(404, "User not found")
         user_data = user_data[0]
         return {"gamesPlayed": len(user_data.get("gamesPlayed")),
                 "score": replace_decimals(user_data.get("highScore"))}

@@ -4,16 +4,23 @@ Ninja Spoilers - A game developed by friend of mine, and he is confident it will
 backend for this.
 
 # Backend api contracts:
-HTTP Method| Resource |
----   | --- | 
-POST  | /ninjaSpoilers/api/v1/user
-GET   | /ninjaSpoilers/api/v1/users
-PUT   | /ninjaSpoilers/api/v1/user/{userId}/state
-GET   | /ninjaSpoilers/api/v1/user/{userId}/state
-PUT   | /ninjaSpoilers/api/v1/user/{userId}/friends
-GET   | /ninjaSpoilers/api/v1/user/{userId}/friends
+HTTP Method| Resource | Version
+---   | --- | --- 
+POST  | /ninjaSpoilers/api/v1/user | v1
+GET   | /ninjaSpoilers/api/v1/users | v1
+PUT   | /ninjaSpoilers/api/v1/user/{userId}/state | v1
+GET   | /ninjaSpoilers/api/v1/user/{userId}/state | v1
+PUT   | /ninjaSpoilers/api/v1/user/{userId}/friends | v1
+GET   | /ninjaSpoilers/api/v1/user/{userId}/friends | v1
 
 Endpoint - "https://evv5qsaiwh.execute-api.us-east-1.amazonaws.com/dev"
+
+Note:
+* Get all user we have implemented pagination to support users in scale. If you don't pass pageNo and perPage then all users will be listed.
+
+# v2 APIs:
+
+As we have the implemented the api to support current requirement as mentioned in the document. For v2 APIs please refer the presentation in v2roadmapsuggestions.
 
 # Task:
 
